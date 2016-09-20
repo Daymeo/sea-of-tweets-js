@@ -18,7 +18,7 @@ var T = new Twit({
   timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
 })
 
-//Log all connections to output
+//Log all connections to outpu
 router.use(function (req,res,next) {
     console.log("/" + req.method + " | " + req.path + " | " + req.hostname + " | " + JSON.stringify(req.query) + " | " + req.ip);
     next();
