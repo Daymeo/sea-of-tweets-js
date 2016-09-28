@@ -27,10 +27,11 @@ router.use(function (req,res,next) {
 router.get("/",function(req,res){res.sendFile(__dirname + "/sotjs/index.html");});
 router.get('/user_tweets.get', function(req, res){
     console.log('/user_tweets.get');
-    T.get('statuses/user_timeline', { screen_name: req.query.screen_name,count: req.query.count } , function(err, data) {
+    T.get('statuses/user_timeline', { screen_name: req.query.screen_name, count: req.query.count } , function(err, data) {
         console.log(req.query.screen_name);
-      res.send(data);
-  });
+        console.log(data);
+        res.send(data);
+    });
 });
 router.get("/js/p5.min.js",function(req,res){res.sendFile(__dirname + "/sotjs/js/p5.min.js");});
 router.get("/js/main.js",function(req,res){res.sendFile(__dirname + "/sotjs/js/main.js");});
