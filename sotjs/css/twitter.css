@@ -1439,3 +1439,28 @@ a.tcu-graylink {
 .SandboxRoot.env-bp-min {
     font-size: 12px
 }
+#canvas-container{
+    width:1920px;
+    height:1080px;
+    position: absolute;
+}
+
+#trump-tweet{
+    display:none;
+    background:white;
+    position:absolute;;
+    top:20%;
+    left:1250px;
+    width:400px;
+    float:left;
+}
+
+#hillary-tweet{
+    display: none;
+    background:white;
+    position:absolute;;
+    top:20%;
+    left:300px;
+    width:400px;
+    float:left;
+}
