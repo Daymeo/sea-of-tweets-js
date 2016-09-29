@@ -40,14 +40,14 @@ scene.insertObject = function(object){
     console.log(scene);
     for(var i in scene){
         if(lastZ){
-            if(object.z>lastZ && scene[i]['z']>object.z){
+            if(object.z>lastZ && scene[i].z>object.z){
                 scene.splice(i, 0, object);
                 return scene[i];
             } else {
-                lastZ = scene[i]['z'];
+                lastZ = scene[i].z;
             }
         } else {
-            var lastZ = scene[i]['z'];
+            var lastZ = scene[i].z;
         }
     }
 }
