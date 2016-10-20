@@ -1449,7 +1449,7 @@ a.tcu-graylink {
     display:none;
     background:white;
     position:absolute;;
-    top:20%;
+    top:250px;
     left:1250px;
     width:400px;
     float:left;
@@ -1459,7 +1459,7 @@ a.tcu-graylink {
     display: none;
     background:white;
     position:absolute;;
-    top:20%;
+    top:250px;
     left:300px;
     width:400px;
     float:left;
