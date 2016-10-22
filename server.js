@@ -2,6 +2,8 @@ var Twit = require('twit');
 var express = require('express');
 var path = require('path');
 var pollster = require('pollster');
+var fs = require('fs');
+var util = require('util');
 
 
 var app = express();
@@ -11,6 +13,8 @@ var router = express.Router();
 app.set('port',8080);
 
 //app.use(express.static(path.join(__dirname, 'sotjs')));
+
+
 
 var T = new Twit({
   consumer_key:         'ogJQ6157RdDrXQ2Re4ZItWzaG',
@@ -29,24 +33,60 @@ router.use(function (req,res,next) {
 router.get("/",function(req,res){res.sendFile(__dirname + "/sotjs/index.html");});
 router.get('/user_tweets.get', function(req, res){
     console.log('/user_tweets.get');
-    T.get('statuses/user_timeline', { screen_name: req.query.screen_name, count: req.query.count } , function(err, data) {
-        //console.log(req.query.screen_name);
-        //console.log(data);
-        res.send(data);
+
+    //if(req.get())
+
+    fs.stat("cache/timeline_"+req.query.screen_name+".txt", function(err,stats){ //Gets the stats of the cached file
+        if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
+          fs.readFile("cache/timeline_"+req.query.screen_name+".txt", function(err, data){  //if so it reads the cached file
+              console.log('Already have a cached user_timeline so Ill just send that');
+              res.send(data);  //and sends to client
+          });
+        } else {
+            T.get('statuses/user_timeline', { screen_name: req.query.screen_name, count: req.query.count } , function(err, data) {
+                fs.writeFile("cache/timeline_"+req.query.screen_name+".txt", JSON.stringify(data), function(err) {
+                    if(err){console.log(err);}
+                    console.log('usertimeline does not exist or expired, got one from twitter and sending that');
+                    res.send(data);
+                });
+            });
+        }
     });
 });
 router.get('/poll_data.get', function(req, res){
-    pollster.charts({topic: '2016-president'}, function(resp){
-        //console.log(resp);
-        res.send(resp);
+    fs.stat("cache/2016-president.txt", function(err,stats){
+        if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
+          fs.readFile("cache/2016-president.txt", function(err,data){
+              console.log('poll data is cached and upto date, serving that');
+              res.send(data);
+          });
+        } else {
+            pollster.charts({topic: '2016-president'}, function(resp){
+                fs.writeFile("cache/2016-president.txt", JSON.stringify(resp), function(err) {
+                });
+                console.log('poll data is not cached or not up to date, getting from pollster and caching it  ');
+                res.send(resp);
+            });
+        }
+
     });
 });
 
 router.get('/user_object.get', function(req,res){
-    T.get('users/lookup.json', {screen_name: req.query.screen_name, } , function (err,data){
-      console.log(data);
-      res.send(data);
-    });
+  //console.log(req);
+  fs.stat("cache/user_"+req.query.screen_name+".txt", function(err,stats){
+      if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
+          fs.readFile("cache/user_"+req.query.screen_name+".txt", function(err,data){
+              res.send(data);
+          });
+      } else {
+        T.get('users/lookup', {screen_name: req.query.screen_name} , function (err,data){
+          fs.writeFile("cache/user_"+req.query.screen_name+".txt",JSON.stringify(data), function (err){
+          });
+          res.send(data);
+        });
+      }
+  });
 });
 
 //Libraries and Styling
