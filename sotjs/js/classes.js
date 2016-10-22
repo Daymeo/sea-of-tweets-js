@@ -1,12 +1,3 @@
-/**
- * [oceanRow description]
- * @param  int x     x position, automatically used by sceneConstructor
- * @param  int y     y position, automatically used by sceneConstructor
- * @param  int z     z position, automatically used by sceneConstructor
- * @param  int state not used currently
- * @return void
- */
-
 var majorityMarker = function(x,y,z,state,party,textOnLeft){if(this.x==undefined){
     this.y = y;
     this.z = z;
@@ -16,12 +7,12 @@ var majorityMarker = function(x,y,z,state,party,textOnLeft){if(this.x==undefined
     switch (this.party) {
         case 'democrat':
             this.lineX = (majorities[0]/100*1920);
-            console.log(majorities[0]);
-            console.log('setting x to '+majorities[0]+"~~~"+this.lineX );
+            //console.log(majorities[0]);
+            //console.log('setting x to '+majorities[0]+"~~~"+this.lineX );
             break;
         case 'conservative':
             this.lineX = width - majorities[2]/100*1920;
-            console.log("republican majority:  "+this.lineX);
+            //console.log("republican majority:  "+this.lineX);
             break;
         case 'undecided':
             this.lineX = majorities[0]/100*1920 + majorities[1]/100*1920;
@@ -138,13 +129,15 @@ var candidateFigure = function(x,y,z,state,side,imageArray,userObject){if(this.x
 
     this.animframe = 0;
     this.counter;
-    this.boats = new Boat(random(majorities[0]/100*1920), random(height/2), random(150,400),'democrat', random(0,4));
+    //this.boats = {};
 
-    if(this.side == 'democratic')
-    for(var i = 0; i < userObject.followers/10000; i++){
+    /*if(this.side == 'democratic')
+    //console.log(userObject['followers']);
+    /*for(var i = 0; i < userObject['followers']/10000; i++){
+        console.log('Adding boats to '+userObject+'userObject');
         var tempBoat = insertObject(new Boat(random(majorities[0]/100*1920), random(height/2), random(150,400),'democrat'),random(0,4));
         this.boats.push(tempBoat);
-    }
+    }*/
 
     this.render = function(){
         switch (this.state) {
@@ -179,7 +172,7 @@ var candidateFigure = function(x,y,z,state,side,imageArray,userObject){if(this.x
                 break;
             default:
         }
-        image(this.imageArray[this.animframe    ],x,y);
+        image(this.imageArray[this.animframe],x,y);
     }
 }}
 
@@ -227,76 +220,52 @@ var speechBubble = function (x,y,z,state,side){if(this.x==undefined){
     }
 }}
 
-var gState = function(x,y,z,state){
-    this.render = function(){
-        textSize(12);
-        fill(0);
-        text(state, x, y);
-    }
-}
+var BoatManager = function(x,y,z,state,trumpFollowerCount, clintonFollowerCount){if(this.x===undefined){
+      this.x = x;
+      this.y = y;
+      this.z = z;
+      this.trumpFollowerCount = trumpFollowerCount;
+      this.clintonFollowerCount = clintonFollowerCount;
+      this.trumpBoats = {};
+      this.clintonBoats = {};
 
-var Boat = function(x,y,z,state,side,numberOfPeople){if(this.x ==undefined){
+      this.generateBoats = function(){
+          for(var i = 0; i < this.trumpFollowerCount/10000; i++){
+              //var tempBoat = new Boat(random(trump))
+          }
+      }
+
+      this.trumpSupport = function(retweetCount){
+
+      }
+      this.clintonSupport = function(retweetCount){
+
+      }
+}}
+
+var Boat = function(x,y,z,state,side){if(this.x ==undefined){
     this.x = x;
-    this.y = y;
     this.z = z;
+    this.y = height/2-z;
     this.state = state;
-    this.numberOfPeople = numberOfPeople;
-
-    this.people;
-
-    for(i = 0; i < this.numberOfPeople; i++){
-        this.people[i] = new Person(this.x-100+(i*200/numberOfPeople), this.y +50, this.z-1, this.side)
-    }
-
+    this.side = side;
     this.render = function(){
-        if(this.side=='republican'){
+        if(this.side=='conservative'){
             fill(200,150,150);
         }  else {
             fill(150,150,200);
         }
-        rect(this.x, this.y, 200,70);
+        rect(this.x, sin(this.x +this.z+ theta)*amplitude + this.y-20, 170, 100);
 
-        if(this.state ==1 ){
-          for (person of this.people) {
-                person.state = 1;
-            }
-            this.state = 2;
-        } else if(this.state = 3){
-          for (person of this.people) {
-                person.state = 0;
-            }
+        //Manages the people on the boat
+        fill(0);
+        for(i=0;i<this.people.length;i++){
+            rect(this.people[i].x,this.people[i].y, 20,50);
         }
-    }
-
-}}
-
-var Person = function(x,y,z,state,side){if(this.x ==undefined){
-    this.baseX = x;
-    this.baseY = y;
-    this.z = z;
-    this.state = state;
-
-    this.actualX = x;
-    this.actualY = y;
-
-    this.render = function(){
-        if(this.state == 0){
-            rect(this.baseX,this.baseY,20,70);
-        } else {
-            if(this.actualY > base.x + 100){
-                rect(this.actualyX,this.actualY,20,70);
-                this.state = 1
-            } else if (this.actualY < base.x + 100) {
-                rect(this.actualyX,this.actualY,20,70);
-                this.state = 2;
-            }
-        }
-
-        if(this.state == 1){
-            actualY+=3;
-        } else if (this.state == 2){
-            actualY-=3;
-        }
-    }
-
+    };
+    this.people = {
+      person:{x:0,y:-50,},
+      person:{x:25,y:-50,},
+      person:{x:50,y:-50,},
+    };
 }}

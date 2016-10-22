@@ -1,6 +1,6 @@
 
 /*
-                    SETTINGS
+~~~~~~~~~~~~~~~~~~SETTINGS~~~~~~~~~~~~~~~``
 */
 var oWidth = 20; // Ocean Width (in ellpises)
 var oHeight = 10; //Ocean Height (in ellipses)
@@ -13,33 +13,38 @@ var objectY = 0;
 var gradient = 155 / oHeight;
 var xObjectLocation = 10; //Stores the y location (on the scope of oWidth) of the tweet
 var yObjectLocation = 5; //Stores the y location (in the scope of the oHeight) of the tweet
-var majorities = [47.6,4,42.8];
-var oceanMajorities;
-var tweets = new Array(0);
-var wonLastRound = 'trump'; //stores who won the previous round so that the ordering of tweets can change
+var hostname = 'localhost'; //TODO: Add VPS ip so it runs on the VPS
 /*
-                    GLOBAL VARIABLES
-
+~~~~~~~~~~~~~~~~GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~``
 */
-var tweetCount = 100; //keeps track of which tweet will be displayed on either side, also number of tweets to get from API
-var trumpUserObject, hillaryUserObject;
-var trumpTimeline,hillaryTimeline;
-var trumpTweet, hillaryTweet;
-var trumpDisplay, clintonDisplay; //stores the names of the candidate objects in global namespace;
-var pollData;
 
+//Global OBJECTS (to render)
+var trumpTweet, clintonTweet;
+var trumpDisplay, clintonDisplay; //stores the names of the candidate objects in global namespace;
+
+//Global DATA OBJECTS (to get information from, just console.log(pollData); to explore them)
+var pollData;
+var trumpUserObject, clintonUserObject;
+var trumpTimeline, clintonTimeline;
+var tweets = new Array(0);
+
+//Global VARIABLES (to refer to)
+var tweetCount = 100; //keeps track of which tweet will be displayed on either side, also number of tweets to get from API
 var speed; //This stores the speed of the waves once calculated
 var xSpacing;
 var ySpacing;
+var majorities; // used to render where the markers show up, set to 477
+var oceanMajorities;  //this is just the 'majorities' variable mapped to oWidth (ocean width) so the ocean can be calculated faster
+var wonLastRound = 'trump'; //stores who won the previous round so that the ordering of tweets can change
 
+//Global LISTS (to itterate through)
 var trumpImgArray = [];
 var clintonImgArray = [];
-var pop;
-var waves;
-
 var scene = [];
 
-
+//Global MEDIA (to display/play)
+var pop; // mp3 of the pop sound when the tweets are displayed
+var waves;  //wave sound in bacckground
 
 function setup() {
     var canvas = createCanvas(1920, 1080);
@@ -66,16 +71,16 @@ function setup() {
 
     //Get all required data
     trumpTimeline = getUserTimeline('realDonaldTrump', tweetCount);
-    hillaryTimeline = getUserTimeline('HillaryClinton', tweetCount);
+    clintonTimeline = getUserTimeline('HillaryClinton', tweetCount);
     pollData = getPollData();
     trumpUserObject = getUserObject('realDonaldTrump');
-    hillaryUserObject = getUserObject('HillaryClinton');
+    clintonUserObject = getUserObject('HillaryClinton');
     tweetCount = 0; //resets tweet count so we can use it as an indexer
 
 
     //Check if all data has been received
     var checkTimeline = setInterval(function(){
-        if(trumpTimeline.readyState==4&&hillaryTimeline.readyState==4&&pollData.readyState==4&&trumpUserObject.readyState==4&&hillaryUserObject.readyState==4){
+        if(trumpTimeline.readyState==4&&clintonTimeline.readyState==4&&pollData.readyState==4&&trumpUserObject.readyState==4&&clintonUserObject.readyState==4){
             initializeScene();
             clearInterval(checkTimeline);
         }
@@ -92,9 +97,9 @@ function initializeScene(){
     trumpTimeline = JSON.parse(trumpTimeline['responseText']);
     trumpTweet = displayTweet(trumpTimeline[0],'left');
 
-    hillaryUserObject = JSON.parse(hillaryUserObject['responseText']);
-    hillaryTimeline = JSON.parse(hillaryTimeline['responseText']);
-    hillaryTweet = displayTweet(hillaryTimeline[0],'right');
+    clintonUserObject = JSON.parse(clintonUserObject['responseText']);
+    clintonTimeline = JSON.parse(clintonTimeline['responseText']);
+    clintonTweet = displayTweet(clintonTimeline[0],'right');
 
 
     pollData = JSON.parse(pollData['responseText']);
@@ -105,7 +110,6 @@ function initializeScene(){
                   (pollData[53]['estimates'][2]['value']),
                   (pollData[53]['estimates'][1]['value'])];
     console.log("majorities:  "+majorities);
-
     waves.play();
 
     /*
@@ -113,6 +117,7 @@ function initializeScene(){
      */
     scene.push(new candidateText(width / 4 * 2.2,0,1,0, 'TRUMP', 200,100,100));
     scene.push(new candidateText(width / 80 * 2.2,0,2,0, 'CLINTON', 100,100,200));
+    //scene.push(new Boat(new Boat(1000,300,6000,0,'conservative')));
     for (var z = 0; z < oHeight; z++) {
         scene.push(new oceanRow(1,z*5,z*ySpacing,1));
         //console.log('Creating a new ocean row at '+z*ySpacing);
@@ -122,11 +127,13 @@ function initializeScene(){
     trumpDisplay.tweet = displayTweet(trumpTimeline[0],'left');
     trumpDisplay.speech = insertObject(new speechBubble(1300,-400,120,1,'trump'));
 
-    //creates the hillary object and gives it the tweet and sspeach objects as children
-    clintonDisplay = insertObject(new candidateFigure(-100, -300, 100,0,'democratic', clintonImgArray, hillaryUserObject));
-    clintonDisplay.tweet = displayTweet(hillaryTimeline[0],'right');
+    //creates the clinton object and gives it the tweet and sspeach objects as children
+    clintonDisplay = insertObject(new candidateFigure(-100, -300, 100,0,'democratic', clintonImgArray, clintonUserObject));
+    clintonDisplay.tweet = displayTweet(clintonTimeline[0],'right');
     clintonDisplay.speech = insertObject(new speechBubble(500,-400,120,1));
+    insertObject(new Boat(1000,0,300,0,'conservative'));
 
+    //console.log(boatTest);
     console.log(scene);
 
     //creates the majority marker for all sides
@@ -167,7 +174,6 @@ function eventLoop(){
             },1000);
         },1000);
         function jabber(candidate1,candidate2){
-            gState.state = "jabber"
             candidate1.state = 2;
             setTimeout(function(){candidate1.speech.state = 1});
             setTimeout(function(){
@@ -176,7 +182,6 @@ function eventLoop(){
             }, 5000);
         }
         function renderBubble(){
-            gState.state = "jabber"
         }
     }
 
@@ -204,5 +209,4 @@ function draw() {
             scene[i].render();
         }
     }
-
 }

@@ -8,14 +8,14 @@
 function getPollData(){
     return $.ajax({
         type: 'GET',
-        url: 'http://localhost/poll_data.get',
+        url: 'http://'+hostname+'/poll_data.get',
     });
 }
 
 function getUserTimeline(screen_name, count) {
     return $.ajax({
         type: 'GET',
-        url: "http://localhost/user_tweets.get",
+        url: "http://'+hostname+'/user_tweets.get",
         data: {
             screen_name: screen_name,
             count: count,
@@ -31,7 +31,7 @@ function getUserTimeline(screen_name, count) {
 function getUserObject(screen_name) {
     return $.ajax({
         type: 'GET',
-        url: "http://localhost/user_object.get",
+        url: "http://'+hostname+'/user_object.get",
         data: {
             screen_name: screen_name,
         }
@@ -108,23 +108,26 @@ function displayTweet(tweet,side){
  * @return {[type]}        returns a pointer to the object so you can run scene.splice()
  */
 function insertObject(object){
-    console.log(scene);
+    //console.log(scene);
     lastZ = scene[0].z;
     for (var i = 1; i < Object.keys(scene).length; i++) {
         if (scene[i].hasOwnProperty(['z'])) {
             if(object.z>=lastZ && scene[i].z>=object.z){
                 scene.splice(i, 0, object);
-                console.log('match',object.z,lastZ, scene[i].z);
-                console.log(scene);
+                //console.log('match',object.z,lastZ, scene[i].z);
+                //console.log(scene[i]);
                 return scene[i];
             } else {
-                console.log('No match',object.z,lastZ, scene[i].z);
+                //console.log('No match',object.z,lastZ, scene[i].z);
                 lastZ = scene[i].z;
             }
-            console.log(scene[i]);
-        } else {
-            scene.push(object);
-            return scene[scene.length];
+            //console.log(scene[i]);
         }
     }
+
+    scene.push(object);
+    //console.log(scene[scene.length-1]);
+    return scene[scene.length-1];
+
+    console.log('This shouldnt happen');
 }
