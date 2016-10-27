@@ -1,3 +1,5 @@
+var hostname = '128.199.142.93';
+
 /**
  * Gets the most recent tweets of a twitter account
  * @param  string screen_name enter the unique screen_name i.e @realDonaldTrump
@@ -15,7 +17,7 @@ function getPollData(){
 function getUserTimeline(screen_name, count) {
     return $.ajax({
         type: 'GET',
-        url: "http://'+hostname+'/user_tweets.get",
+        url: "http://"+hostname+"/user_tweets.get",
         data: {
             screen_name: screen_name,
             count: count,
@@ -31,7 +33,7 @@ function getUserTimeline(screen_name, count) {
 function getUserObject(screen_name) {
     return $.ajax({
         type: 'GET',
-        url: "http://'+hostname+'/user_object.get",
+        url: "http://"+hostname+"/user_object.get",
         data: {
             screen_name: screen_name,
         }
@@ -69,9 +71,9 @@ function displayTweet(tweet,side){
     +"</div>"
     +"<p class='timeline-Tweet-text' lang='en' dir='ltr'>";
     try {
-        domTweet+=tweet['retweeted_status']['text'];
+        domTweet+=tweet.retweeted_status.text;
     } catch (e) {
-        domTweet+=tweet['text'];
+        domTweet+=tweet.text;
     }
     domTweet+="</p>"
     +"<div class='timeline-Tweet-metadata'>"
@@ -107,7 +109,7 @@ function displayTweet(tweet,side){
  * @param  object object this function inserts scene objects into the scene[] in order using the z variable of the object.
  * @return {[type]}        returns a pointer to the object so you can run scene.splice()
  */
-function insertObject(object){
+function insertObject(object,returnIndex){
     //console.log(scene);
     lastZ = scene[0].z;
     for (var i = 1; i < Object.keys(scene).length; i++) {
@@ -116,7 +118,12 @@ function insertObject(object){
                 scene.splice(i, 0, object);
                 //console.log('match',object.z,lastZ, scene[i].z);
                 //console.log(scene[i]);
-                return scene[i];
+                if(returnIndex){
+                    return i;
+                } else{
+                    return scene[i];
+                }
+
             } else {
                 //console.log('No match',object.z,lastZ, scene[i].z);
                 lastZ = scene[i].z;
@@ -127,7 +134,11 @@ function insertObject(object){
 
     scene.push(object);
     //console.log(scene[scene.length-1]);
-    return scene[scene.length-1];
+    if(returnIndex){
+        return scene.length-1;
+    } else{
+        return scene[scene.length-1];
+    }
 
     console.log('This shouldnt happen');
 }

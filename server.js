@@ -75,7 +75,7 @@ router.get('/poll_data.get', function(req, res){
 router.get('/user_object.get', function(req,res){
   //console.log(req);
   fs.stat("cache/user_"+req.query.screen_name+".txt", function(err,stats){
-      if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
+      if(true /*stats!=undefined&&new Date().getHours()==stats.mtime.getHours()*/){
           fs.readFile("cache/user_"+req.query.screen_name+".txt", function(err,data){
               res.send(data);
           });
@@ -102,12 +102,23 @@ router.get("/js/util_functions.js",function(req,res){res.sendFile(__dirname + "/
 router.get("/js/classes.js",function(req,res){res.sendFile(__dirname + "/sotjs/js/classes.js");});
 
 //image request connection
-router.get("/img/clinton_default.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_default.jpg");});
 router.get("/img/trump_default.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_default.jpg");});
-router.get("/img/trump_frame_1.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_1.jpg");});
-router.get("/img/trump_frame_2.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_2.jpg");});
-router.get("/img/trump_frame_3.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_3.jpg");});
+router.get("/img/trump_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_1.png");});
+router.get("/img/trump_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_2.png");});
+router.get("/img/trump_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_3.png");});
 router.get("/img/trump_shock.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_shock.jpg");});
+
+router.get("/img/clinton_default.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_default.jpg");});
+router.get("/img/clinton_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_1.png");});
+router.get("/img/clinton_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_2.png");});
+router.get("/img/clinton_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_3.png");});
+router.get("/img/clinton_shock.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_shock.jpg");});
+
+router.get("/img/boat_hillary.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_hillary.png");});
+router.get("/img/boat_trump.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_trump.png");});
+
+router.get("/img/person.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person.png");});
+
 
 // sound request connection
 router.get("/sounds/pop.mp3",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/pop.mp3");});
