@@ -1,4 +1,4 @@
-var hostname = '128.199.142.93';
+var hostname = 'localhost';
 
 /**
  * Gets the most recent tweets of a twitter account
@@ -10,14 +10,14 @@ var hostname = '128.199.142.93';
 function getPollData(){
     return $.ajax({
         type: 'GET',
-        url: 'http://'+hostname+'/poll_data.get',
+        url: 'http://'+hostname+'/poll_data.json',
     });
 }
 
 function getUserTimeline(screen_name, count) {
     return $.ajax({
         type: 'GET',
-        url: "http://"+hostname+"/user_tweets.get",
+        url: "http://"+hostname+"/user_tweets.json",
         data: {
             screen_name: screen_name,
             count: count,
@@ -33,7 +33,7 @@ function getUserTimeline(screen_name, count) {
 function getUserObject(screen_name) {
     return $.ajax({
         type: 'GET',
-        url: "http://"+hostname+"/user_object.get",
+        url: "http://"+hostname+"/user_object.json",
         data: {
             screen_name: screen_name,
         }

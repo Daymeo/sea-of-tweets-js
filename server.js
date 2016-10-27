@@ -31,8 +31,8 @@ router.use(function (req,res,next) {
 });
 
 router.get("/",function(req,res){res.sendFile(__dirname + "/sotjs/index.html");});
-router.get('/user_tweets.get', function(req, res){
-    console.log('/user_tweets.get');
+router.get('/user_tweets.json', function(req, res){
+    console.log('/user_tweets.json');
 
     //if(req.get())
 
@@ -53,7 +53,7 @@ router.get('/user_tweets.get', function(req, res){
         }
     });
 });
-router.get('/poll_data.get', function(req, res){
+router.get('/poll_data.json', function(req, res){
     fs.stat("cache/2016-president.txt", function(err,stats){
         if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
           fs.readFile("cache/2016-president.txt", function(err,data){
@@ -72,7 +72,7 @@ router.get('/poll_data.get', function(req, res){
     });
 });
 
-router.get('/user_object.get', function(req,res){
+router.get('/user_object.json', function(req,res){
   //console.log(req);
   fs.stat("cache/user_"+req.query.screen_name+".txt", function(err,stats){
       if(true /*stats!=undefined&&new Date().getHours()==stats.mtime.getHours()*/){
