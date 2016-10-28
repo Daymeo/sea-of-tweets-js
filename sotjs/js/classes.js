@@ -190,19 +190,17 @@ var SpeechBubble = function (x,y,z,state,side){
 };
 SpeechBubble.prototype.render = function(){
   //console.log(this.counter, this.state);
-  if(this.side=='conservative'){
-      if(this.state === 1){
-          if(this.counter < 30){
-              this.counter++;
-          }
-      } else if(this.state ===2){
-          if(this.counter > 0){
-              this.counter--;
-          }
-      } else {
-          this.counter = 0;
-      }
-  }
+    if(this.state === 1){
+        if(this.counter < 30){
+            this.counter++;
+        }
+    } else if(this.state ===2){
+        if(this.counter > 0){
+            this.counter--;
+        }
+    } else {
+        this.counter = 0;
+    }
     if(this.counter === 0){
 
     } else if(this.counter < 10){
@@ -210,25 +208,26 @@ SpeechBubble.prototype.render = function(){
       if(this.side === 'conservative'){
         ellipse(this.x+100,this.y+120, 30, 30);
       } else {
-        ellipse(this.x-100,this.y-120, 30, 30);
+        ellipse(this.x-200,this.y+120, 30, 30);
       }
     } else if (this.counter < 20){
       fill(255);
       if(this.side === 'conservative'){
         ellipse(this.x+100,this.y+120, 30, 30);
-        ellipse(this.x+70,this.y+80, 50, 50);
+        ellipse(this.x+70,this.y+80, 70, 50);
       } else {
-        ellipse(this.x-50,this.y+70, 30, 30);
-        ellipse(this.x-70,this.y-80, 30, 30);
+        ellipse(this.x-200,this.y+120, 30, 30);
+        ellipse(this.x-170,this.y+80, 70, 50);
+
       }
     } else if  (this.counter <= 30){
       fill(255);
       if(this.side === 'conservative'){
         ellipse(this.x+100,this.y+120, 30, 30);
-        ellipse(this.x+70,this.y+80, 50, 50);
+        ellipse(this.x+70,this.y+80, 70, 50);
       } else {
-        ellipse(this.x-50,this.y+70, 30, 30);
-        ellipse(this.x-70,this.y-80, 30, 30);
+        ellipse(this.x-200,this.y+120, 30, 30);
+        ellipse(this.x-170,this.y+80, 70, 50);
       }
 
       ellipse(this.x,this.y, 450, 250);
@@ -237,7 +236,7 @@ SpeechBubble.prototype.render = function(){
         if(this.side ==='conservative'){
             $('#trump-tweet').css('display','block');
         } else {
-            $('clinton-tweet').css('display','block');
+            $('#clinton-tweet').css('display','block');
         }
     }
 };
@@ -319,7 +318,9 @@ BoatManager.prototype.trumpSupport = function(retweetCount){
 BoatManager.prototype.clintonSupport = function(retweetCount){
     retweetCount = Math.round(retweetCount/this.clintonBoats.length);
     for(var i = 0; i < this.clintonBoats.length; i++){
-        scene[this.clintonBoats[i]].support = retweetCount;
+        scene[this.clintonBoats[i]].displaySupport(retweetCount);
+
+
         scene[this.clintonBoats[i]].state = 2;
         //console.log("index: "+ i + "support ammount: "+scene[this.clintonBoats[i]].support,"  |  ",scene[this.clintonBoats[i]].state);
     }
@@ -491,4 +492,35 @@ Balloon.prototype.reset = function(){
     this.displayCount = 0;
     this.y = -800;
     this.state = 0;
+};
+
+var GreaterThan = function(x,y,z,state){
+  this.x = x;
+  this.y = y;
+  this.z = z;
+  this.state = state;
+};
+GreaterThan.prototype.render = function(){
+  textSize(100);
+  if(this.state === 0){
+    //do nothing, resting state
+  } else if(this.state == 1){
+
+    text("<", this.x, this.y);
+  } else if(this.state == 2){
+    text(">", this.x, this.y);
+  } else if(this.state == 3){
+    text("=", this.x,this.y);
+  }
+};
+GreaterThan.prototype.compare = function(clintonRetweets, trumpRetweets){
+    if(clintonRetweets==trumpRetweets){
+      this.state = 3;
+      return;
+    }
+    if(clintonRetweets > trumpRetweets){
+      this.state = 2;
+    } else {
+      this.state = 1;
+    }
 };

@@ -1455,12 +1455,12 @@ a.tcu-graylink {
     float:left;
 }
 
-#hillary-tweet{
+#clinton-tweet{
     display: none;
     background:white;
     position:absolute;;
-    top:250px;
-    left:300px;
+    top:275px;
+    left:350px;
     width:400px;
     float:left;
 }

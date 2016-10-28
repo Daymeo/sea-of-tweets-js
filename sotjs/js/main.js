@@ -21,6 +21,7 @@ var trumpTweet, clintonTweet;
 var trumpDisplay, clintonDisplay; //stores the names of the candidate objects in global namespace;
 var clintonTweet, trumpTweet;
 var clintonSpeech, trumpSpeech;
+var comparer;
 
 //Global DATA OBJECTS (to get information from, just console.log(pollData); to explore them)
 var pollData;
@@ -157,6 +158,8 @@ function initializeScene(){
 
     trumpBalloon = insertObject(new Balloon(width/1.85, 600, 400, 0,'conservative'));
     clintonBalloon = insertObject(new Balloon(width/3, 600, 400, 0, 'democratic'));
+
+    comparer = insertObject(new GreaterThan(width/0.45,-600,1000,0));
     $('#trump-tweet').css('display','none');
     $('#clinton-tweet').css('display','none');
 
@@ -203,7 +206,9 @@ function eventLoop(){
       clintonBalloon.countScore(boatManager.clintonBoats);
     setTimeout(function(){
       clintonSpeech.shrink();
-
+    setTimeout(function(){
+      comparer.compare(clintonBalloon.support, trumpBalloon.support);
+    },1000);
     },1000);
     },1000);
     },1000);
