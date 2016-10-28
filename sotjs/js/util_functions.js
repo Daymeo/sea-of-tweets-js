@@ -49,10 +49,11 @@ function getUserObject(screen_name) {
  */
 function displayTweet(tweet,side){
     console.log('displaying tweet', tweet);
+    var tweetObject;
     if(side==='left'){
-        var tweetObject = $('<div id="trump-tweet"></div>');
+        tweetObject = $('<div id="trump-tweet"></div>');
     } else {
-        var tweetObject = $('<div id="hillary-tweet"></div>');
+        tweetObject = $('<div id="clinton-tweet"></div>');
     }
     var domTweet =
     "<div class='tweet-container timeline-Tweet  u-cf js-tweetIdInfo' data-tweet-id='774337407692832769' data-rendered-tweet-id='774337407692832769' data-scribe='component:tweet'>"
@@ -61,7 +62,7 @@ function displayTweet(tweet,side){
     +"<div class='TweetAuthor' data-scribe='component:author'>"
     +"<a class='TweetAuthor-link Identity u-linkBlend' data-scribe='element:user_link' href='https://twitter.com/TwitterDev' aria-label='TwitterDev (screen name: TwitterDev)'>"
     +"<span class='TweetAuthor-avatar Identity-avatar'>"
-    +"<img class='Avatar' data-scribe='element:avatar' src='"+tweet['user']['profile_url']+"'>"
+    +"<img class='Avatar' data-scribe='element:avatar' src='"+tweet['user']['profile_image_url']+"'>"
     +"</span>"
     +"<span class='TweetAuthor-name Identity-name customisable-highlight' title='TwitterDev' data-scribe='element:name'>"+tweet['user']['name']+"</span>"
     +"<span class='TweetAuthor-verifiedBadge' data-scribe='element:verified_badge'><div class='Icon Icon--verified ' aria-label='Verified Account' title='Verified Account' role='img'></div><b class='u-hiddenVisually'>✔</b></span>"

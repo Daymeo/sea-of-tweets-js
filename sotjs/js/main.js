@@ -1,8 +1,4 @@
-
-/*
-~~~~~~~~~~~~~~~~~~SETTINGS~~~~~~~~~~~~~~~``
-*/
-var oWidth = 20; // Ocean Width (in ellpises)
+var oWidth = 20;
 var oHeight = 10; //Ocean Height (in ellipses)
 
 var theta = 0.0; // stores the current angle of the wave
@@ -23,6 +19,8 @@ var boatManager;
 var trumpBallon, clintonBalloon;
 var trumpTweet, clintonTweet;
 var trumpDisplay, clintonDisplay; //stores the names of the candidate objects in global namespace;
+var clintonTweet, trumpTweet;
+var clintonSpeech, trumpSpeech;
 
 //Global DATA OBJECTS (to get information from, just console.log(pollData); to explore them)
 var pollData;
@@ -48,23 +46,45 @@ var scene = [];
 var pop; // mp3 of the pop sound when the tweets are displayed
 var waves;  //wave sound in bacckground
 
+function preload(){
+    //load all necessary resources
+    trumpImgArray = [loadImage('img/trump_frame_1.png'),
+                    loadImage('img/trump_frame_1.png'),
+                    loadImage('img/trump_frame_3.png'),
+                    loadImage('img/trump_frame_2.png'),
+                    loadImage('img/trump_frame_1.png')];
+    clintonImgArray = [loadImage('img/clinton_frame_1.png'),
+                    loadImage('img/clinton_frame_1.png'),
+                    loadImage('img/clinton_frame_3.png'),
+                    loadImage('img/clinton_frame_2.png'),
+                    loadImage('img/clinton_frame_1.png')];
+
+    imgTrumpBoat = loadImage('img/boat_trump.png');
+    imgClintonBoat = loadImage('img/boat_clinton.png');
+
+    imgPersonArray = [loadImage('img/person_1.png'),
+                      loadImage('img/person_2.png'),
+                      loadImage('img/person_1.png'),
+                      loadImage('img/person_3.png')];
+
+    imgTrumpBalloonArray = [loadImage('img/balloon_trump.png'),
+                            loadImage('img/balloon_trump_deflated_1.png'),
+                            loadImage('img/balloon_trump_deflated_2.png')];
+
+    imgClintonBalloonArray = [loadImage('img/balloon_clinton.png'),
+                              loadImage('img/balloon_clinton_deflated_1.png'),
+                              loadImage('img/balloon_clinton_deflated_2.png')];
+
+    pop = loadSound('sounds/pop.mp3');
+    waves = loadSound('sounds/waves.wav');
+}
+
 function setup() {
     var canvas = createCanvas(1920, 1080);
     canvas.parent('canvas-container'); //Places it in the right div in the page
     frameRate(30);
     background(20, 20, 20);
     noStroke();
-
-    //load all necessary resources
-    trumpImgArray = [loadImage('img/trump_default.jpg'),
-                    loadImage('img/trump_frame_1.png'),
-                    loadImage('img/trump_frame_3.png'),
-                    loadImage('img/trump_frame_2.png'),
-                    loadImage('img/trump_shock.jpg')];
-    clintonImgArray = [loadImage('img/clinton_default.jpg')];
-
-    pop = loadSound('sounds/pop.mp3');
-    waves = loadSound('sounds/waves.wav');
 
 
     xSpacing = width / oWidth; //'width' isn't initialised until AFTER createCavas so we can't put it at the top :
@@ -101,7 +121,6 @@ function initializeScene(){
 
     clintonUserObject = JSON.parse(clintonUserObject.responseText);
     clintonTimeline = JSON.parse(clintonTimeline.responseText);
-    clintonTweet = displayTweet(clintonTimeline[0],'right');
 
 
     pollData = JSON.parse(pollData.responseText);
@@ -125,21 +144,21 @@ function initializeScene(){
         //console.log('Creating a new ocean row at '+z*ySpacing);
     }
     //creates the trump Oject and gives it the tweet and speech objects as children.
-    trumpDisplay = insertObject(new CandidateFigure(1400,-300,100,0,'conservative',trumpImgArray, trumpUserObject));
-    trumpDisplay.tweet = displayTweet(trumpTimeline[0],'left');
-    trumpDisplay.speech = insertObject(new SpeechBubble(1300,-400,120,0,'conservative'));
+    trumpDisplay = insertObject(new CandidateFigure(1500,-300,100,0,'conservative',trumpImgArray, trumpUserObject));
+    trumpTweet = displayTweet(trumpTimeline[0],'left');
+    trumpSpeech = insertObject(new SpeechBubble(1500,-275,120,0,'conservative'));
 
     //creates the clinton object and gives it the tweet and sspeach objects as children
     clintonDisplay = insertObject(new CandidateFigure(-100, -300, 100,0,'democratic', clintonImgArray, clintonUserObject));
-    clintonDisplay.tweet = displayTweet(clintonTimeline[0],'right');
-    clintonDisplay.speech = insertObject(new SpeechBubble(500,-400,120,0));
+    clintonTweet = displayTweet(clintonTimeline[0],'right');
+    clintonSpeech = insertObject(new SpeechBubble(500,-275,120,0,'democratic'));
     //insertObject(new Boat(1000,0,300,0,'conservative'));
     boatManager = insertObject(new BoatManager(0,0,0,0,trumpUserObject[0].followers_count, clintonUserObject[0].followers_count));
 
-    trumpBalloon = insertObject(new Balloon(width/1.5, -800, 400, 0,'conservative'));
-    clintonBaloon = insertObject(new Balloon(width/0.5, -800, 400, 0, 'democratic'));
-    trumpDisplay.tweet.hide();
-    clintonDisplay.tweet.hide();
+    trumpBalloon = insertObject(new Balloon(width/1.85, 600, 400, 0,'conservative'));
+    clintonBalloon = insertObject(new Balloon(width/3, 600, 400, 0, 'democratic'));
+    $('#trump-tweet').css('display','none');
+    $('#clinton-tweet').css('display','none');
 
     //console.log(boatTest);
     console.log(scene);
@@ -153,39 +172,43 @@ function initializeScene(){
     boatManager.generateBoats();
 
     console.log(clintonDisplay);
-
+    eventLoop();
     setInterval(function(){
         eventLoop();
-    },15000);
+    },25000);
 }
 
 function eventLoop(){
-    setTimeout(function(){
-        displayTweets();
-        setTimeout(function(){
-            compareResponse();
-            setTimeout(function(){
-                decideWinner();
-                setTimeout(function(){
-                    resetScene();
-                });
-            },1000);
-        },1000);
-    },1000);
-}
-
-function displayTweets(){
   if(wonLastRound=="clinton"){
+    //Trump's actions
     trumpDisplay.startJabber();
     setTimeout(function(){
-      trumpDisplay.speech.grow(trumpDisplay.tweet);
+      trumpSpeech.grow();
     setTimeout(function(){
       trumpDisplay.stopJabber();
-      boatManager.trumpSupport(trumpUserObject[0].followers_count);
+      boatManager.trumpSupport(trumpTimeline[tweetCount].retweet_count);
     setTimeout(function(){
       trumpBalloon.countScore(boatManager.trumpBoats);
     setTimeout(function(){
-      trumpDisplay.speech.shrink(trumpDisplay.tweet);
+      trumpSpeech.shrink();
+    setTimeout(function(){
+      //Clinton's actions
+      clintonDisplay.startJabber();
+    setTimeout(function(){
+      clintonSpeech.grow();
+    setTimeout(function(){
+      clintonDisplay.stopJabber();
+      boatManager.clintonSupport(clintonTimeline[tweetCount].retweet_count);
+    setTimeout(function(){
+      clintonBalloon.countScore(boatManager.clintonBoats);
+    setTimeout(function(){
+      clintonSpeech.shrink();
+
+    },1000);
+    },1000);
+    },1000);
+    },1000);
+    },1000);
     },1000);
   },1000); //stop talking --> balloon starts raising
   },1000); //tweet being displayed --> stop talking and boats showing support
@@ -193,9 +216,9 @@ function displayTweets(){
   } else {
     clintonDisplay.startJabber();
     setTimeout(function(){
-      clintonDisplay.speech.state=1;
+      clintonSpeech.grow(clintonTweet);
     setTimeout(function(){
-      clintonDisplay.tweet.show();
+
     setTimeout(function(){
       clintonDisplay.stopJabber();
       boatManager.clintonSupport(clintonUserObject[0].followers_count);
@@ -206,17 +229,6 @@ function displayTweets(){
     },1000); // makes trump display the tweet
     },2000); //Makes the speech bubble show
   }
-}
-function renderBubble(){
-    trumpTweet = displayTweet(trumpTimeline[tweetCount],'left');
-}
-
-function compareResponse(){
-
-}
-
-function decideWinner(){
-
 }
 
 function resetScene(){

@@ -22,7 +22,7 @@ var T = new Twit({
   access_token:         '2323180442-LvkxeJNBniBTeX0vDYQ77bQIMPOKA1euvaxYkIS',
   access_token_secret:  '1t73ENaypp9afIqRl74q03wxvjoOW4nXk16afpujSbbD2',
   timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
-})
+});
 
 //Log all connections to outpu
 router.use(function (req,res,next) {
@@ -37,7 +37,7 @@ router.get('/user_tweets.json', function(req, res){
     //if(req.get())
 
     fs.stat("cache/timeline_"+req.query.screen_name+".txt", function(err,stats){ //Gets the stats of the cached file
-        if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
+        if(stats!==undefined&&new Date().getHours()==stats.mtime.getHours()){
           fs.readFile("cache/timeline_"+req.query.screen_name+".txt", function(err, data){  //if so it reads the cached file
               console.log('Already have a cached user_timeline so Ill just send that');
               res.send(data);  //and sends to client
@@ -55,7 +55,7 @@ router.get('/user_tweets.json', function(req, res){
 });
 router.get('/poll_data.json', function(req, res){
     fs.stat("cache/2016-president.txt", function(err,stats){
-        if(stats!=undefined&&new Date().getHours()==stats.mtime.getHours()){
+        if(stats!==undefined&&new Date().getHours()==stats.mtime.getHours()){
           fs.readFile("cache/2016-president.txt", function(err,data){
               console.log('poll data is cached and upto date, serving that');
               res.send(data);
@@ -114,10 +114,21 @@ router.get("/img/clinton_frame_2.png",function(req,res){res.sendFile(__dirname +
 router.get("/img/clinton_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_3.png");});
 router.get("/img/clinton_shock.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_shock.jpg");});
 
-router.get("/img/boat_hillary.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_hillary.png");});
+router.get("/img/boat_clinton.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_clinton.png");});
 router.get("/img/boat_trump.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_trump.png");});
 
-router.get("/img/person.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person.png");});
+router.get("/img/balloon_clinton.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/balloon_clinton.png");});
+router.get("/img/balloon_clinton_deflated_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/balloon_clinton_deflated_1.png");});
+router.get("/img/balloon_clinton_deflated_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/balloon_clinton_deflated_2.png");});
+
+router.get("/img/balloon_trump.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/balloon_trump.png");});
+router.get("/img/balloon_trump_deflated_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/balloon_trump_deflated_1.png");});
+router.get("/img/balloon_trump_deflated_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/balloon_trump_deflated_2.png");});
+
+
+router.get("/img/person_1.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person_1.png");});
+router.get("/img/person_2.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person_2.png");});
+router.get("/img/person_3.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person_3.png");});
 
 
 // sound request connection
