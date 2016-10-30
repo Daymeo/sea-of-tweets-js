@@ -20,18 +20,21 @@ var MajorityMarker = function(x,y,z,state,party,textOnLeft){
     }
 }};
 MajorityMarker.prototype.render = function(){
+    textFont(hairline);
+    textSize(80);
     if(this.party=='democrat'){
         strokeWeight(1);
         fill(255);
-        textSize(26);
         textAlign(RIGHT);
-        text(majorities[0]+"%",this.lineX-20,400);
+        text(majorities[0]+"%",this.lineX-20,this.y+470);
     } else if (this.party=='conservative') {
         strokeWeight(1);
         fill(255);
-        textSize(26);
         textAlign(LEFT);
-        text(majorities[2]+"%",this.lineX+20,this.y+400);
+        text(majorities[2]+"%",this.lineX+20,this.y+470);
+        textSize(4);
+        textFont('Arial');
+        text('(HuffPost Pollster API)', this.lineX+270, this.y+470);
     }
 };
 
@@ -40,11 +43,12 @@ var OceanRow = function(x,y,z,state){if(this.z === undefined){
     this.z = z;
 }};
 OceanRow.prototype.render = function(){
+  //0 to 48
     for(var x = 0; x < oWidth; x++){
-        var zColour = this.z/ySpacing;
-        if (x <= oceanMajorities[0]) {fill(gradient * zColour, gradient * zColour, 100 + gradient * zColour);} else
-        if (x <= oceanMajorities[0] + oceanMajorities[1]){ fill(gradient*zColour, gradient * zColour, gradient * zColour);}
-        else {fill(100+gradient*zColour, gradient * zColour, gradient * zColour);}
+        var zSpace = this.z/44;
+        if (x <= oceanMajorities[0]) {fill(141-6*zSpace,141-6*zSpace,209-4.8*zSpace);} else
+        if (x <= oceanMajorities[0] + oceanMajorities[1]){ fill(150-zSpace*6);}
+        else {fill(227-5.4*zSpace, 138-6.3*zSpace, 141-6.6*zSpace);}
         ellipse(x * xSpacing, sin(x + theta) * amplitude + this.z, 170, 100);
     }
 };
@@ -216,6 +220,7 @@ SpeechBubble.prototype.render = function(){
 };
 SpeechBubble.prototype.grow = function(tweetObject){
   this.state = 1;
+  console.log(tweetObject);
 };
 
 SpeechBubble.prototype.shrink = function(tweetObject){
@@ -301,11 +306,13 @@ BoatManager.prototype.clintonSupport = function(retweetCount){
 };
 
 BoatManager.prototype.reset = function(){
-  for(var i = 0; i < this.trumpBoats; i++){
+  console.log('reseting boats');
+  for(var i = 0; i < this.trumpBoats.length; i++){
+    log('resetting trumpBoats'+ scene[this.trumpBoats[i]]);
     scene[this.trumpBoats[i]].state = 0;
     scene[this.trumpBoats[i]].deleteSupport();
   }
-  for(var j = 0; i < this.clintonBoats; i++){
+  for(var j = 0; i < this.clintonBoats.length; i++){
     scene[this.clintonBoats[i]].state = 0;
     scene[this.clintonBoats[i]].deleteSupport();
   }
@@ -314,7 +321,7 @@ BoatManager.prototype.reset = function(){
 // end of BoatManager class
 
 var Boat = function(x,y,z,state,side){
-    this.x = x-50;
+    this.x = x;
     this.z = z;
     this.y = Math.round(z/54)*54-60;
     this.state = state;
@@ -334,7 +341,7 @@ var Boat = function(x,y,z,state,side){
 };
 Boat.prototype.render = function(){
     //console.log(this.people.length) ;
-    this.actualY = sin(this.x +this.z+ theta)*amplitude + this.y-20;
+    this.actualY = sin(this.x +this.z+ theta)*amplitude + this.y-150;
 
     //Manages the people on the boat
     //
@@ -368,16 +375,18 @@ Boat.prototype.render = function(){
     for(i=0;i<this.people.length;i++){
         //console.log("making a rect("+this.x + this.people[i].x,this.y + this.people[i].y, 20,50+")") //activate this debug statement for browser death
         //rect(this.x + this.people[i][0],this.actualY + this.people[i][1], 20,50);
-        image(imgPersonArray[this.animFrame],this.x + this.people[i][0],this.actualY + this.people[i][1]);
-    }
-    if(this.support>0){
-        fill(255);
-        textAlign(CENTER);
-        textSize(26);
-        text(this.support + "<3", this.x+85, this.actualY-50);
+        image(imgPersonArray[this.animFrame],this.x + this.people[i][0],this.actualY + this.people[i][1]+125);
     }
 
     image(this.imageResources,this.x, this.actualY);
+
+    if(this.support>0){
+        textFont('Helvetica');
+        fill(0);
+        textAlign(CENTER);
+        textSize(26);
+        text(this.support, this.x+110, this.actualY+85);
+    }
 };
 
 Boat.prototype.startJumping = function(){
@@ -408,6 +417,7 @@ var Balloon = function(x,y,z,state,side){if(this.x===undefined){
     this.displayCount = 0;
     this.animFrame = 0;
     this.animFrame2 = 0;
+    this.counter = 0;
     if(this.side ==='conservative'){
       this.imageResources = imgTrumpBalloonArray;
     } else {
@@ -432,23 +442,26 @@ Balloon.prototype.render = function(){
       }
       break;
     case 2:// deflating
-      this.y-= (this.y-height)/80;
+      this.y-= (this.y-height)*0.005;
       this.displayCount = 0;
       this.animFrame = 1;
       break;
     case 3: //triumphing -- confetti
-      if (this.animFrame2 >= 3)
-      {
-        this.animFrame2 = 0;
+      if(this.counter > 6){
+        this.animFrame2++;
+        this.counter = 0;
+        if (this.animFrame2 >= 3){
+          this.animFrame2 = 0;
+        }
       }
-      console.log(this.animFrame2);
+
+      this.counter++;
       if(this.side=="conservative"){
         image(trumpConfettiArray[this.animFrame2],this.x-180,this.y-160);
       } else {
         image(clintonConfettiArray[this.animFrame2],this.x-180,this.y-160);
       }
-      this.animFrame2 += 1;
-      this.y -= (-400-this.y)*0.02;
+      this.y += (this.y-height)*0.005;
       break;
       default:
       break;
@@ -456,6 +469,7 @@ Balloon.prototype.render = function(){
   image(this.imageResources[this.animFrame], this.x, this.y);
   fill(255);
   textSize(26);
+  textFont('Helvetica');
   if(this.displayCount!==0){
     text(Math.round(this.displayCount), this.x+165, this.y +280);
   }
@@ -463,6 +477,7 @@ Balloon.prototype.render = function(){
 };
 Balloon.prototype.countScore = function(indexArray){
     this.displayCount = 0;
+    this.retweetCount = 0;
     for(i = 0; i < indexArray.length; i ++){
         this.retweetCount += scene[indexArray[i]].getSupport();
     }
@@ -480,6 +495,8 @@ Balloon.prototype.reset = function(){
     this.displayCount = 0;
     this.y = 600;
     this.state = 0;
+    this.animFrame = 0;
+    this.animFrame2 = 0;
 };
 
 var GreaterThan = function(x,y,z,state){
@@ -490,8 +507,9 @@ var GreaterThan = function(x,y,z,state){
 };
 GreaterThan.prototype.render = function(){
   //rect(this.x,this.y,10,10);
-  text("greaterThan location x"+this.x+"y"+this.y);
-  textSize(200);
+  //text("greaterThan location x"+this.x+"y"+this.y);
+  textSize(80);
+  textFont('Helvetica');
   if(this.state === 0){
     //do nothing, resting state
   } else if(this.state == 1){
@@ -523,29 +541,42 @@ GreaterThan.prototype.compare = function(clintonRetweets, trumpRetweets){
     }
 };
 
+GreaterThan.prototype.reset = function(){
+  this.state = 0;
+};
+
 var CloudManager = function(x,y,z,state){
-  this.x = x;
+  this.x = 1920/2;
   this.y = y;
   this.z = z;
   this.state = state;
   this.trumpResponseRate = 0;
   this.clintonResponseNumber = 0;
+  this.centerPoint = 1920/2;
 };
 CloudManager.prototype.render = function(){
   log(this.state);
   if(this.state === 0){
-
+    image(imgCloudTrump, this.x, this.y);
+    image(imgCloudClinton, this.x-1920, this.y);
   } else if(this.state===1){
     this.x += (this.centerPoint-this.x)/20;
     image(imgCloudTrump, this.x, this.y);
     image(imgCloudClinton, this.x-1920, this.y);
     fill(0);
+    textFont(hairline);
     textSize(80);
-    text(Math.round(this.x/1920*100)+"%",this.x-200,this.y+150);
-    text(100-(Math.round(this.x/1920*100))+"%",this.x+70,this.y+150);
+    text(Math.round(this.x/1920*100)+"%",this.x-150,this.y+150);
+    text(100-(Math.round(this.x/1920*100))+"%",this.x+150,this.y+150);
+    textSize(40);
+    text(this.clintonResponseNumber,this.x-400,this.y+150);
+    text(this.trumpResponseNumber,this.x+400,this.y+150);
     textSize(16);
-    text('Twitter Presence', this.x-230, this.y+170);
-    text('Twitter Presence', this.x+70, this.y+170);
+    textFont('Helvetica');
+    text('Twitter Presence', this.x-150, this.y+180);
+    text('Twitter Presence', this.x+150, this.y+180);
+    text('Total # of Retweets', this.x-400, this.y+180);
+    text('Total # of Retweets', this.x+400, this.y+180);
   }
 };
 CloudManager.prototype.updateData = function(trumpRespNo, clintonRespNo){
@@ -557,10 +588,8 @@ CloudManager.prototype.updateData = function(trumpRespNo, clintonRespNo){
     this.trumpResponseNumber += trumpRespNo;
     this.clintonResponseNumber += clintonRespNo;
   }
-  if(this.trumpResponseNumber > this.clintonResponseNumber){
-    this.centerPoint = (this.trumpResponseNumber-this.clintonResponseNumber)/this.trumpResponseNumber*1920;
-  } else {
-    this.centerPoint = (this.clintonResponseNumber-this.trumpResponseNumber)/this.clintonResponseNumber*1920;
-  }
+  this.centerPoint = this.clintonResponseNumber/(this.trumpResponseNumber+this.clintonResponseNumber)*1920;
+    //this.centerPoint = ((this.clintonResponseNumber-this.trumpResponseNumber)/((this.clintonResponseNumber+this.trumpResponseNumber )/2)*1920);
+    console.log('trump < clinton:  ('+this.clintonResponseNumber+"-"+this.trumpResponseNumber+")/"+this.clintonResponseNumber+"*1920 = " +this.centerPoint);
   console.log(this.x);
 };
