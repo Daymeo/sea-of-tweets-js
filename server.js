@@ -130,6 +130,9 @@ router.get("/img/person_1.png", function(req,res){res.sendFile(__dirname+"/sotjs
 router.get("/img/person_2.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person_2.png");});
 router.get("/img/person_3.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/person_3.png");});
 
+router.get("/img/cloud_clinton.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/cloud_clinton.png");});
+router.get("/img/cloud_trump.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/cloud_trump.png");});
+
 
 // sound request connection
 router.get("/sounds/pop.mp3",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/pop.mp3");});

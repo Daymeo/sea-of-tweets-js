@@ -31,6 +31,7 @@ var tweets = new Array(0);
 
 //Global VARIABLES (to refer to)
 var tweetCount = 100; //keeps track of which tweet will be displayed on either side, also number of tweets to get from API
+var maxTweets = tweetCount;
 var speed; //This stores the speed of the waves once calculated
 var xSpacing;
 var ySpacing;
@@ -75,6 +76,9 @@ function preload(){
     imgClintonBalloonArray = [loadImage('img/balloon_clinton.png'),
                               loadImage('img/balloon_clinton_deflated_1.png'),
                               loadImage('img/balloon_clinton_deflated_2.png')];
+
+    imgCloudTrump = loadImage('img/cloud_trump.png');
+    imgCloudClinton = loadImage('img/cloud_clinton.png');
 
     pop = loadSound('sounds/pop.mp3');
     waves = loadSound('sounds/waves.wav');
@@ -159,7 +163,7 @@ function initializeScene(){
     trumpBalloon = insertObject(new Balloon(width/1.85, 600, 400, 0,'conservative'));
     clintonBalloon = insertObject(new Balloon(width/3, 600, 400, 0, 'democratic'));
 
-    comparer = insertObject(new GreaterThan(width/0.45,-600,1000,0));
+    comparer = insertObject(new GreaterThan(width/1.95 ,-200,200,0));
     $('#trump-tweet').css('display','none');
     $('#clinton-tweet').css('display','none');
 
@@ -167,6 +171,8 @@ function initializeScene(){
     console.log(scene);
 
     //creates the majority marker for all sides
+    //
+    cloud = insertObject(new CloudManager(0,-650,0,0));
     insertObject(new MajorityMarker(0,0,10,0,'democrat',true));
     insertObject(new MajorityMarker(0,0,10,0,'conservative',true));
     insertObject(new MajorityMarker(0,0,10,0,'undecided',true));
@@ -207,7 +213,30 @@ function eventLoop(){
     setTimeout(function(){
       clintonSpeech.shrink();
     setTimeout(function(){
-      comparer.compare(clintonBalloon.support, trumpBalloon.support);
+      wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
+      cloud.updateData(trumpTimeline[tweetCount].retweet_count, clintonTimeline[tweetCount].retweet_count);
+    setTimeout(function(){
+      if(wonLastRound=="trump"){
+        clintonBalloon.deflate();
+      } else {
+        trumpBalloon.deflate();
+      }
+    setTimeout(function(){
+      if(wonLastRound=="trump"){
+        trumpBalloon.triumph();
+      } else {
+        clintonBalloon.triumph();
+      }
+      tweetCount++;
+      if(tweetCount>=100){
+        location.reload();  //reloads the page, we could have a thank you message if we have time :)
+      }
+
+    setTimeout(function(){
+      clintonBalloon.reset();
+      trumpBalloon.reset();
+      boatManager.reset();
+    },5000);
     },1000);
     },1000);
     },1000);
@@ -215,9 +244,11 @@ function eventLoop(){
     },1000);
     },1000);
     },1000);
-  },1000); //stop talking --> balloon starts raising
-  },1000); //tweet being displayed --> stop talking and boats showing support
-},100); //start talking --> display speechbubble
+    },1000);
+    },1000);
+    },1000); //stop talking --> balloon starts raising
+    },1000); //tweet being displayed --> stop talking and boats showing support
+    },1000); //start talking --> display speechbubble
   } else {
     clintonDisplay.startJabber();
     setTimeout(function(){

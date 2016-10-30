@@ -1457,9 +1457,9 @@ a.tcu-graylink {
 
 #clinton-tweet{
     display: none;
-    background:white;
+    background:transparent;
     position:absolute;;
-    top:275px;
+    top:250px;
     left:350px;
     width:400px;
     float:left;

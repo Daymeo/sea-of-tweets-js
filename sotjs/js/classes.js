@@ -326,7 +326,7 @@ BoatManager.prototype.clintonSupport = function(retweetCount){
     }
 };
 
-BoatManager.prototype.clear = function(){
+BoatManager.prototype.reset = function(){
   for(var i = 0; i < this.trumpBoats; i++){
     scene[this.trumpBoats[i]].state = 0;
     scene[this.trumpBoats[i]].deleteSupport();
@@ -399,6 +399,7 @@ Boat.prototype.render = function(){
     if(this.support>0){
         fill(255);
         textAlign(CENTER);
+        textSize(26);
         text(this.support + "<3", this.x+85, this.actualY-50);
     }
 
@@ -456,21 +457,26 @@ Balloon.prototype.render = function(){
       }
       break;
     case 2:// deflating
-      this.y-= (this.y+600)/70;
+      this.y-= (this.y-height)/80;
       this.displayCount = 0;
       this.animFrame = 1;
       break;
     case 3: //triumphing
-      this.y-= (this.y-height)/20;
-      fill(255,255,0);
-      rect(this.x,this.y,50,120);
+      for(var i = 0; i < 3; i++){
+        fill(255,255,0);
+        rect(this.x + random(-300,500),this.y + random(-300,500), 50,50);
+      }
+      this.y -= (-400-this.y)*0.02;
       break;
     default:
       break;
   }
   image(this.imageResources[this.animFrame], this.x, this.y);
   fill(255);
-  text(Math.round(this.displayCount), this.x+165, this.y +280);
+  textSize(26);
+  if(this.displayCount!==0){
+    text(Math.round(this.displayCount), this.x+165, this.y +280);
+  }
   //rect(this.x,this.y,50,120);
 };
 Balloon.prototype.countScore = function(indexArray){
@@ -490,7 +496,7 @@ Balloon.prototype.triumph = function(){
 Balloon.prototype.reset = function(){
     this.retweetCount = 0;
     this.displayCount = 0;
-    this.y = -800;
+    this.y = 600;
     this.state = 0;
 };
 
@@ -501,26 +507,71 @@ var GreaterThan = function(x,y,z,state){
   this.state = state;
 };
 GreaterThan.prototype.render = function(){
-  textSize(100);
+  //rect(this.x,this.y,10,10);
+  text("greaterThan location x"+this.x+"y"+this.y);
+  textSize(200);
   if(this.state === 0){
     //do nothing, resting state
   } else if(this.state == 1){
-
+    fill(255,100,100);
     text("<", this.x, this.y);
   } else if(this.state == 2){
+    fill(100,100,255);
     text(">", this.x, this.y);
   } else if(this.state == 3){
     text("=", this.x,this.y);
   }
 };
 GreaterThan.prototype.compare = function(clintonRetweets, trumpRetweets){
+  console.log(clintonRetweets, trumpRetweets);
     if(clintonRetweets==trumpRetweets){
       this.state = 3;
-      return;
+      if(random(1)>0.5){
+        return 'trump';
+      } else {
+        return 'random';
+      }
     }
     if(clintonRetweets > trumpRetweets){
       this.state = 2;
+      return 'clinton';
     } else {
       this.state = 1;
+      return 'trump';
     }
+};
+
+var CloudManager = function(x,y,z,state){
+  this.x = x;
+  this.y = y;
+  this.z = z;
+  this.state = state;
+  this.trumpResponseRate = 0;
+  this.clintonResponseNumber = 0;
+};
+CloudManager.prototype.render = function(){
+  log(this.state);
+  if(this.state === 0){
+
+  } else if(this.state===1){
+    //this.x += this.x-this.centerPoint/20;
+    image(imgCloudTrump, this.centerPoint, this.y);
+    image(imgCloudClinton, this.centerPoint-1512, this.y);
+    fill(0);
+    textSize(200);
+    text(this.centerPoint/1920*100+"%",this.centerPoint,this.y);
+    text(100-(this.centerPoint/1920*100)+"%",this.centerPoint,this.y);
+  }
+};
+CloudManager.prototype.updateData = function(trumpRespNo, clintonRespNo){
+  console.log(this.state = 1);
+  if(this.trumpResponseNumber===undefined){
+    this.trumpResponseNumber = trumpRespNo;
+    this.clintonResponseNumber = clintonRespNo;
+  } else {
+    this.trumpResponseNumber += trumpRespNo;
+    this.clintonResponseNumber += clintonRespNo;
+  }
+  this.centerPoint = (this.trumpResponseNumber-this.clintonResponseNumber)/this.trumpResponseNumber*1920/*(this.trumpResponseNumber/this.clintonResponseNumber) * 1920*/;
+  console.log(this.centerPoint);
 };
