@@ -1,4 +1,5 @@
-var MajorityMarker = function(x,y,z,state,party,textOnLeft){if(this.x===undefined){
+var MajorityMarker = function(x,y,z,state,party,textOnLeft){
+  if(this.x===undefined){
     this.y = y;
     this.z = z;
     this.lineX = 0;
@@ -14,50 +15,23 @@ var MajorityMarker = function(x,y,z,state,party,textOnLeft){if(this.x===undefine
             this.lineX = width - majorities[2]/100*1920;
             //console.log("republican majority:  "+this.lineX);
             break;
-        case 'undecided':
-            this.lineX = majorities[0]/100*1920 + majorities[1]/100*1920;
-            break;
         default:
 
     }
 }};
 MajorityMarker.prototype.render = function(){
     if(this.party=='democrat'){
-        strokeWeight(3);
-        stroke(100,100,250);
-        line(this.lineX,-450,this.lineX,1080);
-
         strokeWeight(1);
-        fill(100,100,250);
+        fill(255);
         textSize(26);
         textAlign(RIGHT);
-        text('Democrat',this.lineX-20,-450);
-        text(majorities[0]+"%",this.lineX-20,-400);
-        noStroke();
+        text(majorities[0]+"%",this.lineX-20,400);
     } else if (this.party=='conservative') {
-        strokeWeight(3);
-        stroke(200,100,100);
-        line(this.lineX,-450,this.lineX,1080);
-        noStroke();
-
         strokeWeight(1);
-        fill(250,100,100);
+        fill(255);
         textSize(26);
         textAlign(LEFT);
-        text("Conservative",this.lineX+20,this.y-450);
-        text(majorities[2]+"%",this.lineX+20,this.y-400);
-    } else {
-        strokeWeight(3);
-        stroke(80,80,80);
-        line(this.lineX, -500, this.lineX, 1080);
-
-        strokeWeight(1);
-        fill(80);
-        textSize(26);
-        textAlign(CENTER);
-        text("Undecided",this.lineX,this.y-550);
-        text(majorities[1]+"%",this.lineX,this.y-520);
-
+        text(majorities[2]+"%",this.lineX+20,this.y+400);
     }
 };
 
@@ -433,6 +407,7 @@ var Balloon = function(x,y,z,state,side){if(this.x===undefined){
     this.retweetCount = 0;
     this.displayCount = 0;
     this.animFrame = 0;
+    this.animFrame2 = 0;
     if(this.side ==='conservative'){
       this.imageResources = imgTrumpBalloonArray;
     } else {
@@ -461,14 +436,21 @@ Balloon.prototype.render = function(){
       this.displayCount = 0;
       this.animFrame = 1;
       break;
-    case 3: //triumphing
-      for(var i = 0; i < 3; i++){
-        fill(255,255,0);
-        rect(this.x + random(-300,500),this.y + random(-300,500), 50,50);
+    case 3: //triumphing -- confetti
+      if (this.animFrame2 >= 3)
+      {
+        this.animFrame2 = 0;
       }
+      console.log(this.animFrame2);
+      if(this.side=="conservative"){
+        image(trumpConfettiArray[this.animFrame2],this.x-180,this.y-160);
+      } else {
+        image(clintonConfettiArray[this.animFrame2],this.x-180,this.y-160);
+      }
+      this.animFrame2 += 1;
       this.y -= (-400-this.y)*0.02;
       break;
-    default:
+      default:
       break;
   }
   image(this.imageResources[this.animFrame], this.x, this.y);
