@@ -80,6 +80,8 @@ function preload(){
     imgCloudTrump = loadImage('img/cloud_trump.png');
     imgCloudClinton = loadImage('img/cloud_clinton.png');
 
+    imgBackground = loadImage('img/background.png');
+
     pop = loadSound('sounds/pop.mp3');
     waves = loadSound('sounds/waves.wav');
 }
@@ -273,6 +275,7 @@ function resetScene(){
 
 function draw() {
     background('#7FB2F0');
+    image(imgBackground,0,0);
     translate(width * 0.025, height / 1.8); //The ocean is offset a really arbitrary ammount so it fits on the screen
     theta += speed;
     sceneObjectRender();

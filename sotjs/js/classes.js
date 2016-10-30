@@ -554,13 +554,16 @@ CloudManager.prototype.render = function(){
   if(this.state === 0){
 
   } else if(this.state===1){
-    //this.x += this.x-this.centerPoint/20;
-    image(imgCloudTrump, this.centerPoint, this.y);
-    image(imgCloudClinton, this.centerPoint-1512, this.y);
+    this.x += (this.centerPoint-this.x)/20;
+    image(imgCloudTrump, this.x, this.y);
+    image(imgCloudClinton, this.x-1920, this.y);
     fill(0);
-    textSize(200);
-    text(this.centerPoint/1920*100+"%",this.centerPoint,this.y);
-    text(100-(this.centerPoint/1920*100)+"%",this.centerPoint,this.y);
+    textSize(80);
+    text(Math.round(this.x/1920*100)+"%",this.x-200,this.y+150);
+    text(100-(Math.round(this.x/1920*100))+"%",this.x+70,this.y+150);
+    textSize(16);
+    text('Twitter Presence', this.x-230, this.y+170);
+    text('Twitter Presence', this.x+70, this.y+170);
   }
 };
 CloudManager.prototype.updateData = function(trumpRespNo, clintonRespNo){
@@ -572,6 +575,10 @@ CloudManager.prototype.updateData = function(trumpRespNo, clintonRespNo){
     this.trumpResponseNumber += trumpRespNo;
     this.clintonResponseNumber += clintonRespNo;
   }
-  this.centerPoint = (this.trumpResponseNumber-this.clintonResponseNumber)/this.trumpResponseNumber*1920/*(this.trumpResponseNumber/this.clintonResponseNumber) * 1920*/;
-  console.log(this.centerPoint);
+  if(this.trumpResponseNumber > this.clintonResponseNumber){
+    this.centerPoint = (this.trumpResponseNumber-this.clintonResponseNumber)/this.trumpResponseNumber*1920;
+  } else {
+    this.centerPoint = (this.clintonResponseNumber-this.trumpResponseNumber)/this.clintonResponseNumber*1920;
+  }
+  console.log(this.x);
 };
