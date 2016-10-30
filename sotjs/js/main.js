@@ -43,6 +43,8 @@ var wonLastRound = 'clinton'; //stores who won the previous round so that the or
 var trumpImgArray = [];
 var clintonImgArray = [];
 var scene = [];
+//var trumpConfettiArray = [];
+//var clintonConfettiArray = [];
 
 //Global MEDIA (to display/play)
 var pop; // mp3 of the pop sound when the tweets are displayed
@@ -60,6 +62,12 @@ function preload(){
                     loadImage('img/clinton_frame_3.png'),
                     loadImage('img/clinton_frame_2.png'),
                     loadImage('img/clinton_frame_1.png')];
+    trumpConfettiArray = [loadImage('img/confetti_trump_1.png'),
+                          loadImage('img/confetti_trump_2.png'),
+                          loadImage('img/confetti_trump_3.png')];
+    clintonConfettiArray = [loadImage('img/confetti_clinton_1.png'),
+                            loadImage('img/confetti_clinton_2.png'),
+                            loadImage('img/confetti_clinton_3.png')];
 
     imgTrumpBoat = loadImage('img/boat_trump.png');
     imgClintonBoat = loadImage('img/boat_clinton.png');
@@ -143,8 +151,6 @@ function initializeScene(){
     /*
      *  SCENE CONSTRUCTOR
      */
-    scene.push(new CandidateText(width / 4 * 2.2,0,1,0, 'TRUMP', 200,100,100));
-    scene.push(new CandidateText(width / 80 * 2.2,0,2,0, 'CLINTON', 100,100,200));
     //scene.push(new Boat(new Boat(1000,300,6000,0,'conservative')));
     for (var z = 0; z < oHeight; z++) {
         scene.push(new OceanRow(1,z*5,z*ySpacing,1));
@@ -175,9 +181,9 @@ function initializeScene(){
     //creates the majority marker for all sides
     //
     cloud = insertObject(new CloudManager(0,-650,0,0));
-    insertObject(new MajorityMarker(0,0,10,0,'democrat',true));
-    insertObject(new MajorityMarker(0,0,10,0,'conservative',true));
-    insertObject(new MajorityMarker(0,0,10,0,'undecided',true));
+
+    insertObject(new MajorityMarker(0,0,500,0,'democrat',true));
+    insertObject(new MajorityMarker(0,0,500,0,'conservative',true));
 
     //Do this last because it relies on the scene array not being deleted after;
     boatManager.generateBoats();
