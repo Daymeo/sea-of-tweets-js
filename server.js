@@ -108,6 +108,14 @@ router.get("/img/trump_frame_2.png",function(req,res){res.sendFile(__dirname + "
 router.get("/img/trump_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_3.png");});
 router.get("/img/trump_shock.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_shock.jpg");});
 
+  // confetti pics
+router.get("/img/confetti_trump_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_trump_1.png");});
+router.get("/img/confetti_trump_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_trump_2.png");});
+router.get("/img/confetti_trump_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_trump_3.png");});
+router.get("/img/confetti_clinton_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_clinton_1.png");});
+router.get("/img/confetti_clinton_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_clinton_2.png");});
+router.get("/img/confetti_clinton_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_clinton_3.png");});
+
 router.get("/img/clinton_default.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_default.jpg");});
 router.get("/img/clinton_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_1.png");});
 router.get("/img/clinton_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_2.png");});
@@ -135,13 +143,14 @@ router.get("/img/cloud_trump.png", function(req,res){res.sendFile(__dirname+"/so
 
 router.get("/img/background.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/background.png");});
 
-
 // sound request connection
 router.get("/sounds/pop.mp3",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/pop.mp3");});
 router.get("/sounds/waves.wav",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/waves.wav");});
 
+router.get("/geomancy_hairline.otf",function(req,res){res.sendFile(__dirname + "/sotjs/geomancy_hairline.otf");});
+
 app.use("/",router);
 
-app.listen(80,function(){
+app.listen(8080,function(){
   console.log("Loading correctly @ port 8080 ;)");
 });

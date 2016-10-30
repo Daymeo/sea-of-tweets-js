@@ -10,6 +10,9 @@ var gradient = 155 / oHeight;
 var xObjectLocation = 10; //Stores the y location (on the scope of oWidth) of the tweet
 var yObjectLocation = 5; //Stores the y location (in the scope of the oHeight) of the tweet
 var hostname = 'localhost'; //TODO: Add VPS ip so it runs on the VPS
+var hairline;
+
+
 /*
 ~~~~~~~~~~~~~~~~GLOBAL VARIABLES~~~~~~~~~~~~~~~~~~~~~``
 */
@@ -100,6 +103,7 @@ function setup() {
     frameRate(30);
     background(20, 20, 20);
     noStroke();
+    hairline = loadFont('geomancy_hairline.otf');
 
 
     xSpacing = width / oWidth; //'width' isn't initialised until AFTER createCavas so we can't put it at the top :
@@ -196,6 +200,7 @@ function initializeScene(){
 }
 
 function eventLoop(){
+  console.log('new  eventLoop initiating, current tweetCount  = '+tweetCount+'| wonLast = '+wonLastRound);
   if(wonLastRound=="clinton"){
     //Trump's actions
     trumpDisplay.startJabber();
@@ -224,6 +229,7 @@ function eventLoop(){
       wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
       cloud.updateData(trumpTimeline[tweetCount].retweet_count, clintonTimeline[tweetCount].retweet_count);
     setTimeout(function(){
+      comparer.reset();
       if(wonLastRound=="trump"){
         clintonBalloon.deflate();
       } else {
@@ -235,43 +241,94 @@ function eventLoop(){
       } else {
         clintonBalloon.triumph();
       }
-      tweetCount++;
-      if(tweetCount>=100){
-        location.reload();  //reloads the page, we could have a thank you message if we have time :)
-      }
 
     setTimeout(function(){
-      clintonBalloon.reset();
-      trumpBalloon.reset();
-      boatManager.reset();
+      cleanUp();
+    },5000);
+    },1000);
+    },1000);
+    },3000);
+    },1000);
+    },1000);
     },5000);
     },1000);
     },1000);
     },1000);
+    },1000); //stop talking --> balloon starts raising
+    },5000); //tweet being displayed --> stop talking and boats showing support
+    },1000); //start talking --> display speechbubble
+  } else {
+    //clintons's actions
+    clintonDisplay.startJabber();
+    setTimeout(function(){
+      clintonSpeech.grow();
+    setTimeout(function(){
+      clintonDisplay.stopJabber();
+      boatManager.clintonSupport(clintonTimeline[tweetCount].retweet_count);
+    setTimeout(function(){
+      boatManager.reset();
+      clintonBalloon.countScore(boatManager.clintonBoats);
+    setTimeout(function(){
+      clintonSpeech.shrink();
+    setTimeout(function(){
+      //trumps's actions
+      trumpDisplay.startJabber();
+    setTimeout(function(){
+      trumpSpeech.grow();
+    setTimeout(function(){
+      trumpDisplay.stopJabber();
+      boatManager.trumpSupport(trumpTimeline[tweetCount].retweet_count);
+    setTimeout(function(){
+      trumpBalloon.countScore(boatManager.trumpBoats);
+      boatManager.reset();
+    setTimeout(function(){
+      trumpSpeech.shrink();
+    setTimeout(function(){
+      wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
+      cloud.updateData(trumpTimeline[tweetCount].retweet_count, clintonTimeline[tweetCount].retweet_count);
+    setTimeout(function(){
+      comparer.reset();
+      if(wonLastRound=="trump"){
+        clintonBalloon.deflate();
+      } else {
+        trumpBalloon.deflate();
+      }
+    setTimeout(function(){
+      if(wonLastRound=="trump"){
+        trumpBalloon.triumph();
+      } else {
+        clintonBalloon.triumph();
+      }
+    setTimeout(function(){
+      cleanUp();
+    },5000);
     },1000);
     },1000);
+    },3000);
     },1000);
+    },1000);
+    },5000);
     },1000);
     },1000);
     },1000);
     },1000); //stop talking --> balloon starts raising
-    },1000); //tweet being displayed --> stop talking and boats showing support
+    },5000); //tweet being displayed --> stop talking and boats showing support
     },1000); //start talking --> display speechbubble
-  } else {
-    clintonDisplay.startJabber();
-    setTimeout(function(){
-      clintonSpeech.grow(clintonTweet);
-    setTimeout(function(){
-
-    setTimeout(function(){
-      clintonDisplay.stopJabber();
-      boatManager.clintonSupport(clintonUserObject[0].followers_count);
-    setTimeout(function(){
-
-    },100);
-    },2000); //show's the support for the tweet
-    },1000); // makes trump display the tweet
-    },2000); //Makes the speech bubble show
+  }
+  function cleanUp(){
+    tweetCount++;
+    if(tweetCount>=100){
+      location.reload();  //reloads the page, we could have a thank you message if we have time :)
+    }
+    clintonBalloon.reset();
+    trumpBalloon.reset();
+    boatManager.reset();
+    $('#clinton-tweet').remove();
+    $('#trump-tweet').remove();
+    clintonTweet = displayTweet(clintonTimeline[tweetCount],'right');
+    trumpTweet = displayTweet(trumpTimeline[tweetCount],'left');
+    $('#clinton-tweet').hide();
+    $('#trump-tweet').hide();
   }
 }
 
