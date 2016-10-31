@@ -102,8 +102,6 @@ function displayTweet(tweet,side){
     +"</ul>";
     tweetObject.append(domTweet).appendTo('body');
     tweetObject.fadeIn(100);
-    pop.setVolume(0.6);
-    pop.play();
     return tweetObject;
 }
 

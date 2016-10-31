@@ -115,9 +115,11 @@ var CandidateFigure = function(x,y,z,state,side,imageArray,userObject){if(this.x
 }};
 CandidateFigure.prototype.startJabber = function(){
   this.state = 1;
+  wawa.play();
 };
 CandidateFigure.prototype.stopJabber = function(){
   this.state = 3;
+  wawa.stop();
 };
 CandidateFigure.prototype.shockExpression = function(){
   this.state = 4;
@@ -224,6 +226,8 @@ SpeechBubble.prototype.render = function(){
       //ellipse(this.x,this.y, 450, 250);
     }
     if(this.counter === 30){
+      pop.setVolume(0.6);
+      pop.play();
         if(this.side ==='conservative'){
             $('#trump-tweet').css('display','block');
         } else {

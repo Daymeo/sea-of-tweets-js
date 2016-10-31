@@ -53,6 +53,7 @@ var guiCounter = 0;
 //Global MEDIA (to display/play)
 var pop; // mp3 of the pop sound when the tweets are displayed
 var waves;  //wave sound in bacckground
+var wawa;
 
 function preload(){
     //load all necessary resources
@@ -113,6 +114,7 @@ function preload(){
 
     pop = loadSound('sounds/pop.mp3');
     waves = loadSound('sounds/waves.wav');
+    wawa = loadSound('sounds/wawa.mp3')
 }
 
 function setup() {
@@ -168,7 +170,8 @@ function initializeScene(){
                   (pollData[53].estimates[2].value),
                   (pollData[53].estimates[1].value)];
     console.log("majorities:  "+majorities);
-    waves.play();
+    waves.setVolume(0.4);
+    waves.loop();
 
     /*
      *  SCENE CONSTRUCTOR
