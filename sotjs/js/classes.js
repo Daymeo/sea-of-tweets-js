@@ -43,10 +43,11 @@ var OceanRow = function(x,y,z,state){if(this.z === undefined){
     this.z = z;
 }};
 OceanRow.prototype.render = function(){
-  //0 to 48
+  //40,109,147 -> 121,185,209
+  //0,63,150 ->
     for(var x = 0; x < oWidth; x++){
         var zSpace = this.z/44;
-        if (x <= oceanMajorities[0]) {fill(141-6*zSpace,141-6*zSpace,209-4.8*zSpace);} else
+        if (x <= oceanMajorities[0]) {fill(161-12.1*zSpace,205-9.6*zSpace,229-8.2*zSpace);} else
         if (x <= oceanMajorities[0] + oceanMajorities[1]){ fill(150-zSpace*6);}
         else {fill(227-5.4*zSpace, 138-6.3*zSpace, 141-6.6*zSpace);}
         ellipse(x * xSpacing, sin(x + theta) * amplitude + this.z, 170, 100);
@@ -106,6 +107,11 @@ var CandidateFigure = function(x,y,z,state,side,imageArray,userObject){if(this.x
     this.userObject = userObject;
     this.counter = 0;
     this.animFrame = 0;
+    if(this.side =='conservative'){
+      this.podium = imgSpeakerTableTrump;
+    } else {
+      this.podium = imgSpeakerTableClinton;
+    }
 }};
 CandidateFigure.prototype.startJabber = function(){
   this.state = 1;
@@ -156,6 +162,8 @@ CandidateFigure.prototype.render = function(){
     //console.log(this.state+"  |  "+ this.animFrame);
     //console.log(this.imageArray);
     image(this.imageArray[this.animFrame],this.x,this.y);
+    image(this.podium, this.x+80, this.y +280);
+
 };
 
 var SpeechBubble = function (x,y,z,state,side){
@@ -208,7 +216,7 @@ SpeechBubble.prototype.render = function(){
         ellipse(this.x-170,this.y+80, 70, 50);
       }
 
-      ellipse(this.x,this.y, 450, 250);
+      //ellipse(this.x,this.y, 450, 250);
     }
     if(this.counter === 30){
         if(this.side ==='conservative'){
@@ -220,7 +228,13 @@ SpeechBubble.prototype.render = function(){
 };
 SpeechBubble.prototype.grow = function(tweetObject){
   this.state = 1;
-  console.log(tweetObject);
+  if(this.side == 'conservative'){
+    trumpTweet = displayTweet(trumpTimeline[tweetCount],'left');
+  } else {
+    clintonTweet = displayTweet(clintonTimeline[tweetCount],'right');
+  }
+  $(trumpTweet).css('display','none');
+  $(clintonTweet).css('display','none');
 };
 
 SpeechBubble.prototype.shrink = function(tweetObject){
@@ -326,9 +340,6 @@ var Boat = function(x,y,z,state,side){
     this.y = Math.round(z/54)*54-60;
     this.state = state;
     this.side = side;
-    this.people =  [[-20,-80],
-                    [30,-80],
-                    [80,-80]]; //xy coordinates of the people on each boat, (relative to the boat so when the boat bobs we don't have to calculate to much);
     this.actualY = this.y;
     this.support = 0;
     this.animFrame = 0;
@@ -347,11 +358,8 @@ Boat.prototype.render = function(){
     //
     switch (this.state) {
         case 0:
-            for(i=0;i<this.people.length;i++){
-              this.people[i][0] = i*50-20;
-              this.people[i][1] = -40;
-            }
-
+            this.animFrame = 0;
+            this.state = 1;
             break;
         case 1:
             //Do nothing
@@ -372,11 +380,7 @@ Boat.prototype.render = function(){
             break;
     }
     fill(50);
-    for(i=0;i<this.people.length;i++){
-        //console.log("making a rect("+this.x + this.people[i].x,this.y + this.people[i].y, 20,50+")") //activate this debug statement for browser death
-        //rect(this.x + this.people[i][0],this.actualY + this.people[i][1], 20,50);
-        image(imgPersonArray[this.animFrame],this.x + this.people[i][0],this.actualY + this.people[i][1]+125);
-    }
+    image(imgPersonArray[this.animFrame], this.x+20,this.actualY+90);
 
     image(this.imageResources,this.x, this.actualY);
 
@@ -385,7 +389,7 @@ Boat.prototype.render = function(){
         fill(0);
         textAlign(CENTER);
         textSize(26);
-        text(this.support, this.x+110, this.actualY+85);
+        text(this.support, this.x+141, this.actualY+78);
     }
 };
 
@@ -418,6 +422,7 @@ var Balloon = function(x,y,z,state,side){if(this.x===undefined){
     this.animFrame = 0;
     this.animFrame2 = 0;
     this.counter = 0;
+    this.yVelocity = 0;
     if(this.side ==='conservative'){
       this.imageResources = imgTrumpBalloonArray;
     } else {
@@ -442,11 +447,14 @@ Balloon.prototype.render = function(){
       }
       break;
     case 2:// deflating
-      this.y-= (this.y-height)*0.005;
+      this.yVelocity +=0.05;
+      this.y+= this.yVelocity;
       this.displayCount = 0;
       this.animFrame = 1;
       break;
     case 3: //triumphing -- confetti
+      this.yVelocity -=0.05;
+      this.y+= this.yVelocity;
       if(this.counter > 6){
         this.animFrame2++;
         this.counter = 0;
@@ -485,12 +493,15 @@ Balloon.prototype.countScore = function(indexArray){
     this.state = 1;
 };
 Balloon.prototype.deflate = function(){
+    this.yVelocity = 0;
     this.state = 2;
 };
 Balloon.prototype.triumph = function(){
+    this.yVelocity = 0;
     this.state = 3;
 };
 Balloon.prototype.reset = function(){
+    this.yVelocity = 0;
     this.retweetCount = 0;
     this.displayCount = 0;
     this.y = 600;
@@ -508,17 +519,20 @@ var GreaterThan = function(x,y,z,state){
 GreaterThan.prototype.render = function(){
   //rect(this.x,this.y,10,10);
   //text("greaterThan location x"+this.x+"y"+this.y);
-  textSize(80);
-  textFont('Helvetica');
+
+  textFont('Arial');
   if(this.state === 0){
     //do nothing, resting state
   } else if(this.state == 1){
     fill(255,100,100);
+    textSize(26);
     text("<", this.x, this.y);
   } else if(this.state == 2){
     fill(100,100,255);
+    textSize(26);
     text(">", this.x, this.y);
   } else if(this.state == 3){
+    textSize(26);
     text("=", this.x,this.y);
   }
 };

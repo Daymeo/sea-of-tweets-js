@@ -10,7 +10,7 @@ var app = express();
 var router = express.Router();
 
 
-app.set('port',8080);
+app.set('port',80);
 
 //app.use(express.static(path.join(__dirname, 'sotjs')));
 
@@ -143,6 +143,10 @@ router.get("/img/cloud_trump.png", function(req,res){res.sendFile(__dirname+"/so
 
 router.get("/img/background.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/background.png");});
 
+router.get("/img/speaker_table_clinton.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/speaker_table_clinton.png");});
+router.get("/img/speaker_table_trump.png", function(req,res){res.sendFile(__dirname+"/sotjs/img/speaker_table_trump.png");});
+
+
 // sound request connection
 router.get("/sounds/pop.mp3",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/pop.mp3");});
 router.get("/sounds/waves.wav",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/waves.wav");});
@@ -151,6 +155,6 @@ router.get("/geomancy_hairline.otf",function(req,res){res.sendFile(__dirname + "
 
 app.use("/",router);
 
-app.listen(8080,function(){
-  console.log("Loading correctly @ port 8080 ;)");
+app.listen(80,function(){
+  console.log("Loading correctly @ port 80 ;)");
 });

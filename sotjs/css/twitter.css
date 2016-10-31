@@ -1447,20 +1447,24 @@ a.tcu-graylink {
 
 #trump-tweet{
     display:none;
-    background:transparent;
+    background:white;
     position:absolute;;
-    top:250px;
-    left:1350px;
+    top:150px;
+    left:1250px;
     width:400px;
     float:left;
+    border-radius:100px;
+    padding:50px;
 }
 
 #clinton-tweet{
     display: none;
-    background:transparent;
+    background:white;
     position:absolute;;
-    top:250px;
-    left:350px;
+    top:150px;
+    left:250px;
     width:400px;
     float:left;
+    border-radius:100px;
+    padding:50px;
 }

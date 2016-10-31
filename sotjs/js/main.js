@@ -48,6 +48,7 @@ var clintonImgArray = [];
 var scene = [];
 //var trumpConfettiArray = [];
 //var clintonConfettiArray = [];
+var guiCounter = 0;
 
 //Global MEDIA (to display/play)
 var pop; // mp3 of the pop sound when the tweets are displayed
@@ -87,6 +88,9 @@ function preload(){
     imgClintonBalloonArray = [loadImage('img/balloon_clinton.png'),
                               loadImage('img/balloon_clinton_deflated_1.png'),
                               loadImage('img/balloon_clinton_deflated_2.png')];
+    imgSpeakerTableTrump = loadImage('img/speaker_table_trump.png');
+    imgSpeakerTableClinton = loadImage('img/speaker_table_clinton.png');
+
 
     imgCloudTrump = loadImage('img/cloud_trump.png');
     imgCloudClinton = loadImage('img/cloud_clinton.png');
@@ -191,12 +195,13 @@ function initializeScene(){
 
     //Do this last because it relies on the scene array not being deleted after;
     boatManager.generateBoats();
-
-    console.log(clintonDisplay);
-    eventLoop();
-    setInterval(function(){
+    setTimeout(function(){
+      eventLoop();
+      setInterval(function(){
         eventLoop();
-    },25000);
+      },39000);
+    },5000);
+
 }
 
 function eventLoop(){
@@ -212,6 +217,7 @@ function eventLoop(){
     setTimeout(function(){
       trumpBalloon.countScore(boatManager.trumpBoats);
     setTimeout(function(){
+      boatManager.reset();
       trumpSpeech.shrink();
     setTimeout(function(){
       //Clinton's actions
@@ -224,6 +230,7 @@ function eventLoop(){
     setTimeout(function(){
       clintonBalloon.countScore(boatManager.clintonBoats);
     setTimeout(function(){
+      boatManager.reset();
       clintonSpeech.shrink();
     setTimeout(function(){
       wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
@@ -246,15 +253,15 @@ function eventLoop(){
       cleanUp();
     },5000);
     },1000);
-    },1000);
+    },4000);
     },3000);
     },1000);
-    },1000);
+    },5000);
     },5000);
     },1000);
     },1000);
     },1000);
-    },1000); //stop talking --> balloon starts raising
+    },5000); //stop talking --> balloon starts raising
     },5000); //tweet being displayed --> stop talking and boats showing support
     },1000); //start talking --> display speechbubble
   } else {
@@ -266,9 +273,9 @@ function eventLoop(){
       clintonDisplay.stopJabber();
       boatManager.clintonSupport(clintonTimeline[tweetCount].retweet_count);
     setTimeout(function(){
-      boatManager.reset();
       clintonBalloon.countScore(boatManager.clintonBoats);
     setTimeout(function(){
+      boatManager.reset();
       clintonSpeech.shrink();
     setTimeout(function(){
       //trumps's actions
@@ -280,8 +287,8 @@ function eventLoop(){
       boatManager.trumpSupport(trumpTimeline[tweetCount].retweet_count);
     setTimeout(function(){
       trumpBalloon.countScore(boatManager.trumpBoats);
-      boatManager.reset();
     setTimeout(function(){
+      boatManager.reset();
       trumpSpeech.shrink();
     setTimeout(function(){
       wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
@@ -303,15 +310,15 @@ function eventLoop(){
       cleanUp();
     },5000);
     },1000);
-    },1000);
+    },4000);
     },3000);
     },1000);
-    },1000);
+    },5000);
     },5000);
     },1000);
     },1000);
     },1000);
-    },1000); //stop talking --> balloon starts raising
+    },5000); //stop talking --> balloon starts raising
     },5000); //tweet being displayed --> stop talking and boats showing support
     },1000); //start talking --> display speechbubble
   }
@@ -325,10 +332,6 @@ function eventLoop(){
     boatManager.reset();
     $('#clinton-tweet').remove();
     $('#trump-tweet').remove();
-    clintonTweet = displayTweet(clintonTimeline[tweetCount],'right');
-    trumpTweet = displayTweet(trumpTimeline[tweetCount],'left');
-    $('#clinton-tweet').hide();
-    $('#trump-tweet').hide();
   }
 }
 
@@ -347,4 +350,19 @@ function draw() {
             scene[i].render();
         }
     }
+    if(guiCounter < 90 ){
+      image(imgTrumpBoat,-30, 370,174/2,210/2);
+    } else {
+      image(imgClintonBoat,-30, 370,174/2,210/2);
+      if(guiCounter > 180){
+        guiCounter = 0;
+      }
+    }
+    textSize(20);
+    textFont('Helvetica');
+    textAlign(LEFT);
+    fill('255');
+    text('100,000',-30,335);
+    text('followers',-30,365);
+    guiCounter++;
 }
