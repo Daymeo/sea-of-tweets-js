@@ -56,12 +56,12 @@ var waves;  //wave sound in bacckground
 
 function preload(){
     //load all necessary resources
-    trumpImgArray = [loadImage('img/trump_frame_1.png'),
+    trumpImgArray = [loadImage('img/trump_default.png'),
                     loadImage('img/trump_frame_1.png'),
                     loadImage('img/trump_frame_3.png'),
                     loadImage('img/trump_frame_2.png'),
                     loadImage('img/trump_frame_1.png')];
-    clintonImgArray = [loadImage('img/clinton_frame_1.png'),
+    clintonImgArray = [loadImage('img/clinton_default.png'),
                     loadImage('img/clinton_frame_1.png'),
                     loadImage('img/clinton_frame_3.png'),
                     loadImage('img/clinton_frame_2.png'),
@@ -165,14 +165,14 @@ function initializeScene(){
         //console.log('Creating a new ocean row at '+z*ySpacing);
     }
     //creates the trump Oject and gives it the tweet and speech objects as children.
-    trumpDisplay = insertObject(new CandidateFigure(1500,-300,100,0,'conservative',trumpImgArray, trumpUserObject));
+    trumpDisplay = insertObject(new CandidateFigure(1440,-420,100,0,'conservative',trumpImgArray, trumpUserObject));
     trumpTweet = displayTweet(trumpTimeline[0],'left');
-    trumpSpeech = insertObject(new SpeechBubble(1500,-275,120,0,'conservative'));
+    trumpSpeech = insertObject(new SpeechBubble(1440,-320,120,0,'conservative'));
 
     //creates the clinton object and gives it the tweet and sspeach objects as children
-    clintonDisplay = insertObject(new CandidateFigure(-100, -300, 100,0,'democratic', clintonImgArray, clintonUserObject));
+    clintonDisplay = insertObject(new CandidateFigure(-100, -420, 100,0,'democratic', clintonImgArray, clintonUserObject));
     clintonTweet = displayTweet(clintonTimeline[0],'right');
-    clintonSpeech = insertObject(new SpeechBubble(500,-275,120,0,'democratic'));
+    clintonSpeech = insertObject(new SpeechBubble(500,-380,120,0,'democratic'));
     //insertObject(new Boat(1000,0,300,0,'conservative'));
     boatManager = insertObject(new BoatManager(0,0,0,0,trumpUserObject[0].followers_count, clintonUserObject[0].followers_count));
 
@@ -199,7 +199,7 @@ function initializeScene(){
       eventLoop();
       setInterval(function(){
         eventLoop();
-      },39000);
+      },44000);
     },5000);
 
 }
@@ -217,7 +217,6 @@ function eventLoop(){
     setTimeout(function(){
       trumpBalloon.countScore(boatManager.trumpBoats);
     setTimeout(function(){
-      boatManager.reset();
       trumpSpeech.shrink();
     setTimeout(function(){
       //Clinton's actions
@@ -236,7 +235,6 @@ function eventLoop(){
       wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
       cloud.updateData(trumpTimeline[tweetCount].retweet_count, clintonTimeline[tweetCount].retweet_count);
     setTimeout(function(){
-      comparer.reset();
       if(wonLastRound=="trump"){
         clintonBalloon.deflate();
       } else {
@@ -250,9 +248,10 @@ function eventLoop(){
       }
 
     setTimeout(function(){
+      boatManager.reset();
       cleanUp();
     },5000);
-    },1000);
+    },4000);
     },4000);
     },3000);
     },1000);
@@ -275,7 +274,6 @@ function eventLoop(){
     setTimeout(function(){
       clintonBalloon.countScore(boatManager.clintonBoats);
     setTimeout(function(){
-      boatManager.reset();
       clintonSpeech.shrink();
     setTimeout(function(){
       //trumps's actions
@@ -288,7 +286,6 @@ function eventLoop(){
     setTimeout(function(){
       trumpBalloon.countScore(boatManager.trumpBoats);
     setTimeout(function(){
-      boatManager.reset();
       trumpSpeech.shrink();
     setTimeout(function(){
       wonLastRound = comparer.compare(clintonBalloon.retweetCount, trumpBalloon.retweetCount);
@@ -309,7 +306,7 @@ function eventLoop(){
     setTimeout(function(){
       cleanUp();
     },5000);
-    },1000);
+  },4000);
     },4000);
     },3000);
     },1000);

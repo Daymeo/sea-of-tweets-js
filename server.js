@@ -102,11 +102,11 @@ router.get("/js/util_functions.js",function(req,res){res.sendFile(__dirname + "/
 router.get("/js/classes.js",function(req,res){res.sendFile(__dirname + "/sotjs/js/classes.js");});
 
 //image request connection
-router.get("/img/trump_default.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_default.jpg");});
+router.get("/img/trump_default.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_default.png");});
 router.get("/img/trump_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_1.png");});
 router.get("/img/trump_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_2.png");});
 router.get("/img/trump_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_3.png");});
-router.get("/img/trump_shock.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_shock.jpg");});
+router.get("/img/trump_shock.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_shock.png");});
 
   // confetti pics
 router.get("/img/confetti_trump_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_trump_1.png");});
@@ -116,11 +116,11 @@ router.get("/img/confetti_clinton_1.png",function(req,res){res.sendFile(__dirnam
 router.get("/img/confetti_clinton_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_clinton_2.png");});
 router.get("/img/confetti_clinton_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/confetti_clinton_3.png");});
 
-router.get("/img/clinton_default.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_default.jpg");});
+router.get("/img/clinton_default.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_default.png");});
 router.get("/img/clinton_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_1.png");});
 router.get("/img/clinton_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_2.png");});
 router.get("/img/clinton_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_3.png");});
-router.get("/img/clinton_shock.jpg",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_shock.jpg");});
+router.get("/img/clinton_shock.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_shock.png");});
 
 router.get("/img/boat_clinton.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_clinton.png");});
 router.get("/img/boat_trump.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_trump.png");});

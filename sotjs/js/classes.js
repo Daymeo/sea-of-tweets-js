@@ -162,7 +162,12 @@ CandidateFigure.prototype.render = function(){
     //console.log(this.state+"  |  "+ this.animFrame);
     //console.log(this.imageArray);
     image(this.imageArray[this.animFrame],this.x,this.y);
-    image(this.podium, this.x+80, this.y +280);
+    if(this.side =='conservative'){
+      image(this.podium, this.x+80, this.y +350);
+    } else {
+      image(this.podium, this.x+120, this.y +350);
+    }
+
 
 };
 
@@ -453,6 +458,7 @@ Balloon.prototype.render = function(){
       this.animFrame = 1;
       break;
     case 3: //triumphing -- confetti
+      console.log(this.yVelocity, this.y);
       this.yVelocity -=0.05;
       this.y+= this.yVelocity;
       if(this.counter > 6){
@@ -469,7 +475,6 @@ Balloon.prototype.render = function(){
       } else {
         image(clintonConfettiArray[this.animFrame2],this.x-180,this.y-160);
       }
-      this.y += (this.y-height)*0.005;
       break;
       default:
       break;
@@ -577,6 +582,7 @@ CloudManager.prototype.render = function(){
     this.x += (this.centerPoint-this.x)/20;
     image(imgCloudTrump, this.x, this.y);
     image(imgCloudClinton, this.x-1920, this.y);
+    textAlign(CENTER);
     fill(0);
     textFont(hairline);
     textSize(80);

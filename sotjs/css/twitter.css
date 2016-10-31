@@ -1450,11 +1450,11 @@ a.tcu-graylink {
     background:white;
     position:absolute;;
     top:150px;
-    left:1250px;
+    left:1100px;
     width:400px;
     float:left;
-    border-radius:100px;
-    padding:50px;
+    border-radius:50px;
+    padding:20px;
 }
 
 #clinton-tweet{
@@ -1462,9 +1462,9 @@ a.tcu-graylink {
     background:white;
     position:absolute;;
     top:150px;
-    left:250px;
+    left:350px;
     width:400px;
     float:left;
-    border-radius:100px;
-    padding:50px;
+    border-radius:50px;
+    padding:20px;
 }
