@@ -106,6 +106,12 @@ router.get("/img/trump_default.png",function(req,res){res.sendFile(__dirname + "
 router.get("/img/trump_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_1.png");});
 router.get("/img/trump_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_2.png");});
 router.get("/img/trump_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_frame_3.png");});
+router.get("/img/trump_crying_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_crying_1.png");});
+router.get("/img/trump_crying_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_crying_2.png");});
+router.get("/img/trump_crying_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_crying_3.png");});
+router.get("/img/trump_laughing_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_laughing_1.png");});
+router.get("/img/trump_laughing_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_laughing_2.png");});
+router.get("/img/trump_laughing_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_laughing_3.png");});
 router.get("/img/trump_shock.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/trump_shock.png");});
 
   // confetti pics
@@ -120,6 +126,13 @@ router.get("/img/clinton_default.png",function(req,res){res.sendFile(__dirname +
 router.get("/img/clinton_frame_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_1.png");});
 router.get("/img/clinton_frame_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_2.png");});
 router.get("/img/clinton_frame_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_frame_3.png");});
+router.get("/img/clinton_crying_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_crying_1.png");});
+router.get("/img/clinton_crying_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_crying_2.png");});
+router.get("/img/clinton_crying_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_crying_3.png");});
+router.get("/img/clinton_lauging_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_1.png");});
+router.get("/img/clinton_lauging_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_2.png");});
+router.get("/img/clinton_lauging_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_3.png");});
+
 router.get("/img/clinton_shock.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_shock.png");});
 
 router.get("/img/boat_clinton.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/boat_clinton.png");});

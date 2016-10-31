@@ -56,16 +56,30 @@ var waves;  //wave sound in bacckground
 
 function preload(){
     //load all necessary resources
-    trumpImgArray = [loadImage('img/trump_default.png'),
-                    loadImage('img/trump_frame_1.png'),
+    imgTrumpDefault = [loadImage('img/trump_default.png')];
+    imgTrumpTalkingArray = [loadImage('img/trump_frame_1.png'),
                     loadImage('img/trump_frame_3.png'),
                     loadImage('img/trump_frame_2.png'),
                     loadImage('img/trump_frame_1.png')];
-    clintonImgArray = [loadImage('img/clinton_default.png'),
-                    loadImage('img/clinton_frame_1.png'),
+    imgTrumpCryingArray = [loadImage('img/trump_crying_1.png'),
+                        loadImage('img/trump_crying_2.png'),
+                        loadImage('img/trump_crying_3.png')];
+    imgTrumpCryingArray = [loadImage('img/trump_laughing_1.png'),
+                        loadImage('img/trump_laughing_2.png'),
+                        loadImage('img/trump_laughing_3.png')];
+    imgClintonDefault = [loadImage('img/clinton_default.png')];
+    clintonTalkingArray = [loadImage('img/clinton_frame_1.png'),
                     loadImage('img/clinton_frame_3.png'),
                     loadImage('img/clinton_frame_2.png'),
                     loadImage('img/clinton_frame_1.png')];
+    clintonCryingArray = [loadImage('img/clinton_crying_3.png'),
+                          loadImage('img/clinton_crying_2.png'),
+                          loadImage('img/clinton_crying_1.png')];
+    clintonLaughingArray = [loadImage('img/clinton_laughing_3.png'),
+                            loadImage('img/clinton_laughing_2.png'),
+                            loadImage('img/clinton_laughing_1.png')];
+
+
     trumpConfettiArray = [loadImage('img/confetti_trump_1.png'),
                           loadImage('img/confetti_trump_2.png'),
                           loadImage('img/confetti_trump_3.png')];
