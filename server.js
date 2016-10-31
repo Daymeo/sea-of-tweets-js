@@ -129,9 +129,9 @@ router.get("/img/clinton_frame_3.png",function(req,res){res.sendFile(__dirname +
 router.get("/img/clinton_crying_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_crying_1.png");});
 router.get("/img/clinton_crying_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_crying_2.png");});
 router.get("/img/clinton_crying_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_crying_3.png");});
-router.get("/img/clinton_lauging_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_1.png");});
-router.get("/img/clinton_lauging_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_2.png");});
-router.get("/img/clinton_lauging_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_3.png");});
+router.get("/img/clinton_laughing_1.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_1.png");});
+router.get("/img/clinton_laughing_2.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_2.png");});
+router.get("/img/clinton_laughing_3.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_laughing_3.png");});
 
 router.get("/img/clinton_shock.png",function(req,res){res.sendFile(__dirname + "/sotjs/img/clinton_shock.png");});
 
@@ -163,6 +163,7 @@ router.get("/img/speaker_table_trump.png", function(req,res){res.sendFile(__dirn
 // sound request connection
 router.get("/sounds/pop.mp3",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/pop.mp3");});
 router.get("/sounds/waves.wav",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/waves.wav");});
+router.get("/sounds/wawa.mp3",function(req,res){res.sendFile(__dirname + "/sotjs/sounds/wawa.mp3");});
 
 router.get("/geomancy_hairline.otf",function(req,res){res.sendFile(__dirname + "/sotjs/geomancy_hairline.otf");});
 
